@@ -15,6 +15,13 @@ class CreateAssignTable extends Migration
     {
         Schema::create('assign', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('duration');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('date_id')->unsigned();
+            $table->foreign('date_id')->references('id')->on('date');
+            $table->integer('parkingPlaces_id')->unsigned();
+            $table->foreign('parkingPlaces_id')->references('id')->on('parkingPlaces');
             $table->timestamps();
         });
     }
