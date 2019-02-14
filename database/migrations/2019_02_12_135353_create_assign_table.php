@@ -22,7 +22,6 @@ class CreateAssignTable extends Migration
             $table->foreign('date_id')->references('id')->on('date');
             $table->integer('parkingPlaces_id')->unsigned();
             $table->foreign('parkingPlaces_id')->references('id')->on('parkingPlaces');
-            $table->timestamps();
         });
     }
 

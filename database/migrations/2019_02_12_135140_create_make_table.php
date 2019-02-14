@@ -19,7 +19,6 @@ class CreateMakeTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('request_id')->unsigned();
             $table->foreign('request_id')->references('id')->on('requests');
-            $table->timestamps();
         });
     }
 
