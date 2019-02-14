@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Parking\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Parking;
 
 use Illuminate\Database\Eloquent\Model;
 
