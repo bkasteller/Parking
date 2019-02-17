@@ -15,7 +15,7 @@ class CreateAssignTable extends Migration
     {
         Schema::create('assign', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('duration');
+            $table->integer('duration')->default(7);
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('date_id')->unsigned();

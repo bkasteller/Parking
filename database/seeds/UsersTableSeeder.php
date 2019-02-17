@@ -12,6 +12,7 @@ class UsersTableSeeder extends Seeder {
             array(
                 array(
                     'id' => 1,
+                    'validate' => TRUE,
                     'firstName' => 'Bryan',
                     'lastName' => 'KASTELLER',
                     'phoneNumber' => '0669056264',
@@ -26,6 +27,7 @@ class UsersTableSeeder extends Seeder {
 
                 array(
                     'id' => 2,
+                    'validate' => FALSE,
                     'firstName' => 'Regis',
                     'lastName' => 'GRUIMBERG',
                     'phoneNumber' => '0700000000',

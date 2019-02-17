@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('validate')->default(FALSE);
             $table->string('firstName');
             $table->string('lastName');
             $table->string('email')->unique();

@@ -16,6 +16,22 @@ class AssignTableSeeder extends Seeder {
                     'user_id' => 1,
                     'date_id' => 1,
                     'parkingPlaces_id' => 2
+                ),
+
+                array(
+                    'id' => 2,
+                    'duration' => 5,
+                    'user_id' => 1,
+                    'date_id' => 2,
+                    'parkingPlaces_id' => 1
+                ),
+
+                array(
+                    'id' => 3,
+                    'duration' => 8,
+                    'user_id' => 1,
+                    'date_id' => 3,
+                    'parkingPlaces_id' => 2
                 )
             )
 

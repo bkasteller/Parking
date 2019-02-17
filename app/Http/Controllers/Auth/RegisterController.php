@@ -68,6 +68,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        flash("Your account was successfully created")->success()->important();;
+
         return User::create([
             'firstName' => ucfirst ( $data['firstName'] ),
             'lastName' => mb_strtoupper( $data['lastName'] ),
