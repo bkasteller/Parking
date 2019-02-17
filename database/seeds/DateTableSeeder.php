@@ -18,14 +18,14 @@ class DateTableSeeder extends Seeder {
 
                 array(
                     'id' => 2,
-                    'created_at' => '2019-02-13 00:00:00',
-                    'updated_at' => '2019-02-13 00:00:00'
+                    'created_at' => '2019-02-14 00:00:00',
+                    'updated_at' => '2019-02-14 00:00:00'
                 ),
 
                 array(
                     'id' => 3,
-                    'created_at' => '2019-02-14 00:00:00',
-                    'updated_at' => '2019-02-14 00:00:00'
+                    'created_at' => '2019-02-16 00:00:00',
+                    'updated_at' => '2019-02-16 00:00:00'
                 )
             )
 

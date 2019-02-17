@@ -25,43 +25,56 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $myPlaces = $this->recoverMyPlaces();
+
+        if ( !empty($myPlaces[0]) )
+        {
+            if ( empty(request('assign')) )
+                $myPlace = $myPlaces->first();
+            else
+                $myPlace = $myPlaces
+                         ->where('assign_id', request('assign'))
+                         ->first();
+
+            $myPlace = $this->expired($myPlace);
+        } else
+            $myPlace = '';
+
         return view('home', [
-            'myPlace' => $this->recoverMyPlace(),
+            'byRequest' => request('assign'),
+            'myPlaces' => $myPlaces,
+            'myPlace' => $myPlace,
         ]);
     }
 
     /**
-     * This function return the la place assigned to the current user
+     *
      */
-    public function recoverMyPlace()
+    public function recoverMyPlaces()
     {
-        $myPlaces = DB::table('users')
-                    ->join('assign', 'assign.user_id', '=', 'users.id')
-                    ->join('parkingPlaces', 'parkingPlaces.id', '=', 'assign.parkingPlaces_id')
-                    ->join('date', 'date.id', '=', 'assign.date_id')
-                    ->select('parkingPlaces.id', 'assign.id AS assign_id', 'duration', 'date.created_at')
-                    ->where('users.id', Auth::user()->id)
-                    ->orderBy('date.created_at', 'desc')
-                    ->get();
-
-        return  $this->expired($myPlaces);
+        return DB::table('users')
+                 ->join('assign', 'assign.user_id', '=', 'users.id')
+                 ->join('parkingPlaces', 'parkingPlaces.id', '=', 'assign.parkingPlaces_id')
+                 ->join('date', 'date.id', '=', 'assign.date_id')
+                 ->select('parkingPlaces.id', 'assign.id AS assign_id', 'duration', 'date.created_at')
+                 ->where('users.id', Auth::user()->id)
+                 ->orderBy('created_at', 'desc')
+                 ->get();
     }
 
-    public function expired($myPlaces)
+    /**
+     *
+     */
+    public function expired($myPlace)
     {
-        $latestPlace = $myPlaces->first();
-        $duration = $latestPlace->duration;
+        $duration = $myPlace->duration;
         $now = date("Y-m-d");
-        $start = date("Y-m-d", strtotime($latestPlace->created_at));
+        $start = date("Y-m-d", strtotime($myPlace->created_at));
         $end = date("Y-m-d", strtotime($start." +".$duration." days"));
         $days = (strtotime($end) - strtotime($now)) / 86400;
 
-        if ( $days < 0 )
-          $days = 'expirated';
-
         return [
-            'oldPlaces' => $myPlaces,
-            'attribute' => $latestPlace,
+            'attributes' => $myPlace,
             'start' => $start,
             'duration' => $duration,
             'now' => $now,

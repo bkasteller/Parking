@@ -12,7 +12,7 @@ class AssignTableSeeder extends Seeder {
             array(
                 array(
                     'id' => 1,
-                    'duration' => 7,
+                    'duration' => 1,
                     'user_id' => 1,
                     'date_id' => 1,
                     'parkingPlaces_id' => 2
@@ -20,7 +20,7 @@ class AssignTableSeeder extends Seeder {
 
                 array(
                     'id' => 2,
-                    'duration' => 5,
+                    'duration' => 1,
                     'user_id' => 1,
                     'date_id' => 2,
                     'parkingPlaces_id' => 1
