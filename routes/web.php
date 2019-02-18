@@ -12,6 +12,12 @@
 */
 
 Route::get('/', 'WelcomeController@index');
+Route::get('/regtest', function(){
+  return "salut";
+});
+Route::get('/regtest/{name}', function($name){
+  return "salut $name" ;
+});
 
 Auth::routes();
 
