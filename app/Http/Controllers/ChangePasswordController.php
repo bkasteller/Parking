@@ -47,9 +47,8 @@ class ChangePasswordController extends Controller
 
         flash("Your password was successfully changed")->success()->important();
 
-        DB::table('users')
-          ->where('id', Auth::user()->id)
-          ->update(['password'=>Hash::make(request('new_password'))]);
+        Auth::user()->password = Hash::make(request('new_password'));
+        Auth::user()->save();
 
         return redirect('/home');
     }

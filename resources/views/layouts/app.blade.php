@@ -20,7 +20,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="css/my-css.css">
 </head>
 <body>
     <div id="app">
@@ -58,12 +59,20 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users') }}">
+                                        {{ __('Edit Users') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('parkingPlaces') }}">
+                                        {{ __('Edit Parking Places') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('home') }}">
-                                        {{ __('My account') }}
+                                        {{ __('Home') }}
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('changePassword') }}">
-                                        {{ __('Change my password') }}
+                                        {{ __('Change my Password') }}
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
