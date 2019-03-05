@@ -8,9 +8,11 @@
                 @foreach ($parkingPlaces as $parkingPlace)
                     <div style="padding: 25px;">
                         <p>Parking place number : {{ $parkingPlace->id }}</p>
-                        Status : {{ $parkingPlace->status }}
+                        <p>Status : {{ $parkingPlace->status }}</p>
+                        <a href="">Change Status</a> or <a href="">Delete</a>
                     </div>
                 @endforeach
+                <p style="padding: 25px;"><a href="">+ Add a parking place</a></p>
             </div>
         </div>
     </div>

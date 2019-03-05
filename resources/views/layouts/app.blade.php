@@ -59,13 +59,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('users') }}">
-                                        {{ __('Edit Users') }}
-                                    </a>
+                                    @if ( Auth::user()->isAdmin() )
+                                        <a class="dropdown-item" href="{{ route('users') }}">
+                                            {{ __('Edit Users') }}
+                                        </a>
 
-                                    <a class="dropdown-item" href="{{ route('parkingPlaces') }}">
-                                        {{ __('Edit Parking Places') }}
-                                    </a>
+                                        <a class="dropdown-item" href="{{ route('parkingPlaces') }}">
+                                            {{ __('Edit Parking Places') }}
+                                        </a>
+                                    @endif
 
                                     <a class="dropdown-item" href="{{ route('home') }}">
                                         {{ __('Home') }}

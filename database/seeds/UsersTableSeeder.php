@@ -22,7 +22,10 @@ class UsersTableSeeder extends Seeder {
                     'email' => 'bryankasteller.10@gmail.com',
                     'password' => Hash::make('passwordbryan'),
                     'created_at' => '2019-02-14 00:00:00',
-                    'updated_at' => '2019-02-14 00:00:00'
+                    'updated_at' => '2019-02-14 00:00:00',
+                    'activate' => TRUE,
+                    'view' => TRUE,
+                    'type' => 'admin'
                 ),
 
                 array(
@@ -37,7 +40,10 @@ class UsersTableSeeder extends Seeder {
                     'email' => 'regis@gmail.com',
                     'password' => Hash::make('passwordregis'),
                     'created_at' => '2019-02-14 00:00:00',
-                    'updated_at' => '2019-02-14 00:00:00'
+                    'updated_at' => '2019-02-14 00:00:00',
+                    'activate' => FALSE,
+                    'view' => TRUE,
+                    'type' => 'member'
                 )
             )
 

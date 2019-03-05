@@ -68,7 +68,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        flash("Your account was successfully created")->success()->important();;
+        flash("Your account was successfully created")->success()->important();
 
         return User::create([
             'firstName' => ucfirst ( $data['firstName'] ),
@@ -79,6 +79,7 @@ class RegisterController extends Controller
             'zipCode' => $data['zipCode'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'type' => 'type' => User::DEFAULT_TYPE,
         ]);
     }
 }

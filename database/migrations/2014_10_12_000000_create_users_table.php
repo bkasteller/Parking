@@ -25,6 +25,9 @@ class CreateUsersTable extends Migration
             $table->string('adress');
             $table->string('zipCode');
             $table->string('city');
+            $table->string('activate')->default('0');
+            $table->string('view')->default('1');
+            $table->string('type')->default('member');
             $table->rememberToken();
             $table->timestamps();
         });

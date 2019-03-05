@@ -37,7 +37,7 @@ class ChangePasswordController extends Controller
     {
         request()->validate([
             'password' => ['required', function ($attribute, $value, $fail)  {
-                              if (!\Hash::check($value, Auth::user()->password)) {
+                              if ( !\Hash::check($value, Auth::user()->password) ) {
                                   return $fail(__('Invalid password.'));
                               }
                           }],

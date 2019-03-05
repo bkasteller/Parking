@@ -35,6 +35,30 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-4 col-form-label text-md-right">{{ __('Type') }}</div>
+
+                            <div class="col-md-6">
+                                <label for="member" class="col-md-4 col-form-label text-md-right">{{ __('Member') }}</label>
+                                <input type="radio" id="member" name="type" value="member">
+
+                                <label for="admin" class="col-md-4 col-form-label text-md-right">{{ __('Admin') }}</label>
+                                <input type="radio" id="admin" name="type" value="admin">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-4 col-form-label text-md-right">{{ __('Status') }}</div>
+
+                            <div class="col-md-6">
+                                <label for="deactivate" class="col-md-4 col-form-label text-md-right">{{ __('Deactivate') }}</label>
+                                <input type="radio" id="deactivate" name="status" value="0">
+
+                                <label for="hidden" class="col-md-4 col-form-label text-md-right">{{ __('Hidden') }}</label>
+                                <input type="radio" id="hidden" name="status" value="0">
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -52,11 +76,37 @@
         <div class="col-md-8">
             <div class="card">
                 @if ( !empty($users[0]) )
-                    @foreach ($users as $user)
+                    @foreach ( $users as $user )
                         <div style="padding: 25px;">
                             <p>First Name : {{ $user->firstName }}</p>
                             <p>Last Name : {{ $user->lastName }}</p>
-                            Email : {{ $user->email }}
+                            <p>Email : {{ $user->email }}</p>
+
+                            @if ( $user->activate )
+                                <button type="button" class="btn btn-outline-success" href="{{ route('deactivateUser')}}" onclick="event.preventDefault(); document.getElementById('deactivate-user').submit();">Deactive</button>
+                            @else
+                                <button type="button" class="btn btn-outline-primary" href="{{ route('activateUser')}}" onclick="event.preventDefault(); document.getElementById('activate-user').submit();">Active</button>
+                            @endif
+
+                            <form id="activate-user" action="{{ route('activateUser') }}" method="POST" style="display:none;">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <input type="hidden" name="user_activate" value="{{ $user->activate }}">
+                            </form>
+
+                            <button type="button" class="btn btn-outline-warning" href="{{ route('updateUser')}}" onclick="event.preventDefault(); document.getElementById('update-user').submit();">Update</button>
+
+                            <form id="update-user" action="{{ route('updateUser') }}" method="POST" style="display:none;">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            </form>
+
+                            <button type="button" class="btn btn-outline-danger" href="{{ route('deleteUser')}}" onclick="event.preventDefault(); document.getElementById('delete-user').submit();">Delete</button>
+
+                            <form id="update-user" action="{{ route('deleteUser') }}" method="POST" style="display:none;">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                            </form>
                         </div>
                     @endforeach
                 @else
