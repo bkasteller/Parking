@@ -78,10 +78,12 @@
                 @if ( !empty($users[0]) )
                     @foreach ( $users as $user )
                         <div style="padding: 25px;">
-                            <p>First Name : {{ $user->firstName }}</p>
-                            <p>Last Name : {{ $user->lastName }}</p>
-                            <p>Email : {{ $user->email }}</p>
-
+                            First Name : {{ $user->firstName }}
+                            <br>
+                            Last Name : {{ $user->lastName }}
+                            <br>
+                            Email : {{ $user->email }}
+                            <br>
                             @if ( $user->activate )
                                 <button type="button" class="btn btn-outline-success" href="{{ route('deactivateUser')}}" onclick="event.preventDefault(); document.getElementById('deactivate-user').submit();">Deactive</button>
                             @else

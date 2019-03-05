@@ -79,7 +79,7 @@ class RegisterController extends Controller
             'zipCode' => $data['zipCode'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'type' => 'type' => User::DEFAULT_TYPE,
+            'type' => User::DEFAULT_TYPE,
         ]);
     }
 }
