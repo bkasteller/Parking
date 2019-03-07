@@ -3,34 +3,74 @@
 namespace Parking\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Parking\User;
+use Auth;
 
 class UserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
+        $user = User::where('id', Auth::user()->id)->first();
+        return view('user', compact('user'));
     }
 
-    public function update()
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
     {
+        //
     }
 
-    public function activate()
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
     {
-        if ( request('user_activate') )
-          $activate = false;
-        else
-          $activate = true;
-
-        DB::table('users')
-          ->where('id', request('user_id'))
-          ->update(array('activate' => $activate));
-
-        return redirect('users');
+        //
     }
 
-    public function delete()
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        //
     }
 }

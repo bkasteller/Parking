@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'validate', 'lastName', 'firstName', 'email', 'password', 'phoneNumber', 'adress', 'zipCode', 'city', 'activate', 'view', 'type',
+        'lastName', 'firstName', 'email', 'password', 'phoneNumber', 'adress', 'zipCode', 'city', 'activate', 'view', 'type',
     ];
 
     /**
@@ -33,5 +33,15 @@ class User extends Authenticatable
 
     public function isAdmin() {
         return $this->type === self::ADMIN_TYPE;
+    }
+
+    public function places()
+    {
+        return $this->belongsToMany('Parking\Place')->withPivot('date', 'duration');
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany('Parking\Booking');
     }
 }

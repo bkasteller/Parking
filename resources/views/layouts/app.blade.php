@@ -64,14 +64,10 @@
                                             {{ __('Edit Users') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('parkingPlaces') }}">
+                                        <a class="dropdown-item" href="{{ route('places') }}">
                                             {{ __('Edit Parking Places') }}
                                         </a>
                                     @endif
-
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                        {{ __('Home') }}
-                                    </a>
 
                                     <a class="dropdown-item" href="{{ route('changePassword') }}">
                                         {{ __('Change my Password') }}

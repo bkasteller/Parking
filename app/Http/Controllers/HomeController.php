@@ -5,6 +5,7 @@ namespace Parking\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Parking\User;
 
 class HomeController extends Controller
 {
@@ -23,9 +24,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(User $user)
     {
-        $myPlaces = $this->recoverMyPlaces();
+        $myPlaces = $this->recoverMyPlaces($user);
 
         if ( !empty($myPlaces[0]) )
         {
@@ -47,39 +48,8 @@ class HomeController extends Controller
         ]);
     }
 
-    /**
-     *
-     */
-    public function recoverMyPlaces()
+    public function recoverMyPlaces($user)
     {
-        return DB::table('users')
-                 ->join('assign', 'assign.user_id', '=', 'users.id')
-                 ->join('parkingPlaces', 'parkingPlaces.id', '=', 'assign.parkingPlaces_id')
-                 ->join('date', 'date.id', '=', 'assign.date_id')
-                 ->select('parkingPlaces.id', 'assign.id AS assign_id', 'duration', 'date.created_at')
-                 ->where('users.id', Auth::user()->id)
-                 ->orderBy('created_at', 'desc')
-                 ->get();
-    }
-
-    /**
-     *
-     */
-    public function expired($myPlace)
-    {
-        $duration = $myPlace->duration;
-        $now = date("Y-m-d");
-        $start = date("Y-m-d", strtotime($myPlace->created_at));
-        $end = date("Y-m-d", strtotime($start." +".$duration." days"));
-        $days = (strtotime($end) - strtotime($now)) / 86400;
-
-        return [
-            'attributes' => $myPlace,
-            'start' => $start,
-            'duration' => $duration,
-            'now' => $now,
-            'end' => $end,
-            'days' => $days,
-        ];
+        return $user->places;
     }
 }

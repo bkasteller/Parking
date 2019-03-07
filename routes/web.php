@@ -15,8 +15,7 @@ Route::get('/', 'WelcomeController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')
-     ->name('home');
+Route::resource('user','UserController');
 
 Route::post('/changePassword', 'ChangePasswordController@change');
 Route::get('/changePassword', 'ChangePasswordController@index')
@@ -25,15 +24,21 @@ Route::get('/changePassword', 'ChangePasswordController@index')
 Route::group([
    'is_admin' => 'App\Http\Middleware\IsAdmin',
 ], function () {
+    Route::get('/places', 'PlacesController@index')
+         ->name('places');
+
+    Route::get('/places/add', 'PlacesController@add');
+
+    Route::get('/places/delete', 'PlacesController@delete');
+
+    Route::get('/places/{id}', 'PlacesController@describe');
+
+    Route::get('/placeRequest', 'PlacesController@request')
+         ->name('placeRequest');
+
     Route::post('/users', 'UsersController@index');
     Route::get('/users', 'UsersController@index')
-         ->name('users');
-
-    Route::get('/parkingPlaces', 'ParkingPlacesController@index')
-         ->name('parkingPlaces');
-
-    Route::get('/placeRequest', 'PlaceRequestController@index')
-         ->name('placeRequest');
+        ->name('users');
 
     Route::post('/updateUser', 'UserController@update');
     Route::get('/updateUser', 'UserController@index')
