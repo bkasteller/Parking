@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder {
                 'firstName' => 'Bryan',
                 'lastName' => 'KASTELLER',
                 'phoneNumber' => '0669056264',
-                'adress' => '23 rue du chêne',
+                'address' => '23 rue du chêne',
                 'city' => 'Maurevert',
                 'zipCode' => '77390',
                 'email' => 'bryan@gmail.com',
@@ -21,8 +21,8 @@ class UsersTableSeeder extends Seeder {
                 'created_at' => '2019-02-14 00:00:00',
                 'updated_at' => '2019-02-14 00:00:00',
                 'activate' => TRUE,
-                'view' => TRUE,
-                'type' => 'admin'
+                'type' => 'admin',
+                'remember' => FALSE
             )
         );
     }

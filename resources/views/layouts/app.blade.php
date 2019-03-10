@@ -27,7 +27,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -59,17 +59,21 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/user') }}">
+                                        {{ __('Home') }}
+                                    </a>
+
                                     @if ( Auth::user()->isAdmin() )
-                                        <a class="dropdown-item" href="{{ route('users') }}">
+                                        <a class="dropdown-item" href="{{ route('user.search') }}">
                                             {{ __('Edit Users') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('places') }}">
-                                            {{ __('Edit Parking Places') }}
+                                        <a class="dropdown-item" href="{{ url('/places') }}">
+                                            {{ __('Edit Places') }}
                                         </a>
                                     @endif
 
-                                    <a class="dropdown-item" href="{{ route('changePassword') }}">
+                                    <a class="dropdown-item" href="{{ route('updatePassword') }}">
                                         {{ __('Change my Password') }}
                                     </a>
 

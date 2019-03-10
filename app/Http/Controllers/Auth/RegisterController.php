@@ -7,6 +7,10 @@ use Parking\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Response;
+
 
 class RegisterController extends Controller
 {
@@ -28,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -52,7 +56,7 @@ class RegisterController extends Controller
             'lastName' => ['required', 'string', 'max:255'],
             'firstName' => ['required', 'string', 'max:255'],
             'phoneNumber' => ['required', 'numeric', 'digits:10'],
-            'adress' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'zipCode' => ['required', 'string', 'digits:5'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -68,18 +72,38 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        flash("Your account was successfully created")->success()->important();
-
         return User::create([
             'firstName' => ucfirst ( $data['firstName'] ),
             'lastName' => mb_strtoupper( $data['lastName'] ),
             'phoneNumber' => $data['phoneNumber'],
-            'adress' => $data['adress'],
+            'address' => $data['address'],
             'city' => ucfirst ( $data['city'] ),
             'zipCode' => $data['zipCode'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => User::DEFAULT_TYPE,
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        flash("Your request has been submitted to validation.")->success()->important();
     }
 }

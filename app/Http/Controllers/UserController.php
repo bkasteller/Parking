@@ -3,6 +3,8 @@
 namespace Parking\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Parking\User;
 use Auth;
 
@@ -25,30 +27,23 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = User::where('id', Auth::user()->id)
+                    ->first();
+
+        if ( $user->isAdmin() )
+            return view('admin');
+
         return view('user', compact('user'));
     }
 
     /**
-     * Display the specified resource.
+     * Display a listing of the resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function showUpdatePassword()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
+        return view('updatePassword');
     }
 
     /**
@@ -58,19 +53,22 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updatePassword(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'password' => ['required', function ($attribute, $value, $fail) {
+                              if ( !\Hash::check($value, Auth::user()->password) )
+                                  return $fail(__('Invalid password.'));
+                          }],
+            'new_password' => ['required', 'string', 'min:6', 'max:255'],
+            'new_password_confirmation' => ['required', 'same:new_password'],
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function delete($id)
-    {
-        //
+        Auth::user()->password = Hash::make(request('new_password'));
+        Auth::user()->save();
+
+        flash("Your password was successfully changed")->success()->important();
+
+        return redirect('/user');
     }
 }

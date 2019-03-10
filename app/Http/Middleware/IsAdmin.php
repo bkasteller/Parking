@@ -15,11 +15,11 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->isAdmin())
+        if ( auth()->user()->isAdmin() )
             return $next($request);
 
         flash('Your not authorized to see this page.')->error()->important();
 
-        return redirect('home');
+        return redirect('user');
     }
 }

@@ -11,42 +11,32 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'WelcomeController@index')
+     ->name('home');
 
 Auth::routes();
 
-Route::resource('user','UserController');
+Route::get('/user', 'UserController@index')
+     ->name('user');
 
-Route::post('/changePassword', 'ChangePasswordController@change');
-Route::get('/changePassword', 'ChangePasswordController@index')
-     ->name('changePassword');
+Route::get('/password/update', 'UserController@showUpdatePassword')
+     ->name('updatePassword');
+Route::post('/password/update', 'UserController@updatePassword');
 
 Route::group([
-   'is_admin' => 'App\Http\Middleware\IsAdmin',
+   'middleware' => ['is_admin']
 ], function () {
-    Route::get('/places', 'PlacesController@index')
-         ->name('places');
+    Route::get('/admin', 'AdminController@index')
+         ->name('admin');
 
-    Route::get('/places/add', 'PlacesController@add');
+    Route::get('/user/search', 'AdminController@searchUser')
+        ->name('user.search');
+    Route::post('/user/search', 'AdminController@searchUser');
 
-    Route::get('/places/delete', 'PlacesController@delete');
+    Route::get('/user/{user}/activate', 'AdminController@activate')
+         ->name('user.activate');
 
-    Route::get('/places/{id}', 'PlacesController@describe');
+    Route::resource('place', 'PlaceController');
 
-    Route::get('/placeRequest', 'PlacesController@request')
-         ->name('placeRequest');
-
-    Route::post('/users', 'UsersController@index');
-    Route::get('/users', 'UsersController@index')
-        ->name('users');
-
-    Route::post('/updateUser', 'UserController@update');
-    Route::get('/updateUser', 'UserController@index')
-         ->name('updateUser');
-
-    Route::post('/activateUser', 'UserController@activate')
-         ->name('activateUser');
-
-    Route::post('/deleteUser', 'UserController@delete')
-         ->name('deleteUser');
+    Route::resource('places', 'PlacesController');
 });

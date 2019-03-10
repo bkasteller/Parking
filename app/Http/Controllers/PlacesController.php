@@ -25,12 +25,8 @@ class PlacesController extends Controller
         return redirect('places');
     }
 
-    public function describe()
+    public function describe(Place $place)
     {
-        $place = Place::find(request('id'));
-
-        return view('place', [
-            'place' => $place,
-        ]);
+        return view('place', compact('place'));
     }
 }

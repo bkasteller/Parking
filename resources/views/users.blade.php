@@ -8,14 +8,14 @@
                 <div class="card-header">{{ __('Search an USER') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="users">
+                    <form method="POST" action="{{ route('user.search') }}">
                         @csrf
 
                         <div class="form-group row">
                             <label for="lastName" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="last-name" type="text" class="form-control" name="lastName">
+                                <input id="last-name" type="text" class="form-control" name="lastName" value="{{ isset($request) ? $request->lastName : '' }}" maxlength="255">
                             </div>
                         </div>
 
@@ -23,7 +23,7 @@
                             <label for="firstName" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="first-name" type="texte" class="form-control" name="firstName">
+                                <input id="first-name" type="texte" class="form-control" name="firstName" value="{{ isset($request) ? $request->firstName : '' }}" maxlength="255">
                             </div>
                         </div>
 
@@ -31,7 +31,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="texte" class="form-control" name="email">
+                                <input id="email" type="texte" class="form-control" name="email" value="{{ isset($request) ? $request->email : '' }}" maxlength="255">
                             </div>
                         </div>
 
@@ -40,10 +40,18 @@
 
                             <div class="col-md-6">
                                 <label for="member" class="col-md-4 col-form-label text-md-right">{{ __('Member') }}</label>
-                                <input type="radio" id="member" name="type" value="member">
+                                @if ( $request->type == 'nothing')
+                                    <input type="radio" name="type" value="member">
+                                @else
+                                    <input type="radio" name="type" value="member" checked>
+                                @endif
 
                                 <label for="admin" class="col-md-4 col-form-label text-md-right">{{ __('Admin') }}</label>
-                                <input type="radio" id="admin" name="type" value="admin">
+                                @if ( $request->type == 'admin')
+                                    <input type="radio" name="type" value="admin" checked>
+                                @else
+                                    <input type="radio" name="type" value="admin">
+                                @endif
                             </div>
                         </div>
 
@@ -51,11 +59,19 @@
                             <div class="col-md-4 col-form-label text-md-right">{{ __('Status') }}</div>
 
                             <div class="col-md-6">
-                                <label for="deactivate" class="col-md-4 col-form-label text-md-right">{{ __('Deactivate') }}</label>
-                                <input type="radio" id="deactivate" name="status" value="0">
+                              <label for="member" class="col-md-4 col-form-label text-md-right">{{ __('Deactivate') }}</label>
+                              @if ( $request->activate == 'nothing' )
+                                  <input type="radio" name="activate" value="FALSE">
+                              @else
+                                  <input type="radio" name="activate" value="FALSE" checked>
+                              @endif
 
-                                <label for="hidden" class="col-md-4 col-form-label text-md-right">{{ __('Hidden') }}</label>
-                                <input type="radio" id="hidden" name="status" value="0">
+                              <label for="admin" class="col-md-4 col-form-label text-md-right">{{ __('Activate') }}</label>
+                              @if ( $request->activate == 'TRUE' )
+                                  <input type="radio" name="activate" value="TRUE" checked>
+                              @else
+                                  <input type="radio" name="activate" value="TRUE">
+                              @endif
                             </div>
                         </div>
 
@@ -75,40 +91,29 @@
     <div class="row justify-content-center" style="margin-top: 30px;">
         <div class="col-md-8">
             <div class="card">
-                @if ( !empty($users[0]) )
+                @if ( notEmpty($users) )
                     @foreach ( $users as $user )
                         <div style="padding: 25px;">
-                            First Name : {{ $user->firstName }}
-                            <br>
                             Last Name : {{ $user->lastName }}
+                            <br>
+                            First Name : {{ $user->firstName }}
                             <br>
                             Email : {{ $user->email }}
                             <br>
-                            @if ( $user->activate )
-                                <button type="button" class="btn btn-outline-success" href="{{ route('deactivateUser')}}" onclick="event.preventDefault(); document.getElementById('deactivate-user').submit();">Deactive</button>
-                            @else
-                                <button type="button" class="btn btn-outline-primary" href="{{ route('activateUser')}}" onclick="event.preventDefault(); document.getElementById('activate-user').submit();">Active</button>
-                            @endif
 
-                            <form id="activate-user" action="{{ route('activateUser') }}" method="POST" style="display:none;">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                <input type="hidden" name="user_activate" value="{{ $user->activate }}">
-                            </form>
+                            <button type="button" class="btn btn-outline-success" href="{{ url('users.update') }}" onclick="event.preventDefault(); document.getElementById('update-user').submit();">
+                                Update
+                            </button>
 
-                            <button type="button" class="btn btn-outline-warning" href="{{ route('updateUser')}}" onclick="event.preventDefault(); document.getElementById('update-user').submit();">Update</button>
-
-                            <form id="update-user" action="{{ route('updateUser') }}" method="POST" style="display:none;">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            </form>
-
-                            <button type="button" class="btn btn-outline-danger" href="{{ route('deleteUser')}}" onclick="event.preventDefault(); document.getElementById('delete-user').submit();">Delete</button>
-
-                            <form id="update-user" action="{{ route('deleteUser') }}" method="POST" style="display:none;">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            </form>
+                            <a href="{{ route('user.activate', $user) }}">
+                                <button type="button" class="btn btn-outline-danger">
+                                    @if ( $user->activate )
+                                        Deactivate
+                                    @else
+                                        Activate
+                                    @endif
+                                </button>
+                            </a>
                         </div>
                     @endforeach
                 @else
