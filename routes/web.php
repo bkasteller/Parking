@@ -16,15 +16,19 @@ Route::get('/', 'WelcomeController@index')
 
 Auth::routes();
 
-Route::get('/user', 'UserController@index')
-     ->name('user');
+Route::group([
+   'middleware' => ['is_activate']
+], function () {
+    Route::get('/user', 'UserController@index')
+         ->name('user');
 
-Route::get('/password/update', 'UserController@showUpdatePassword')
-     ->name('updatePassword');
-Route::post('/password/update', 'UserController@updatePassword');
+    Route::get('/password/update', 'UserController@showUpdatePassword')
+         ->name('updatePassword');
+    Route::post('/password/update', 'UserController@updatePassword');
+});
 
 Route::group([
-   'middleware' => ['is_admin']
+   'middleware' => ['is_admin', 'is_activate']
 ], function () {
     Route::get('/admin', 'AdminController@index')
          ->name('admin');
@@ -36,7 +40,15 @@ Route::group([
     Route::get('/user/{user}/activate', 'AdminController@activate')
          ->name('user.activate');
 
-    Route::resource('place', 'PlaceController');
+    Route::get('/user/{user}/show', 'AdminController@showUser')
+       ->name('user.show');
 
-    Route::resource('places', 'PlacesController');
+    Route::post('/user/{user}/update', 'AdminController@updateUser')
+        ->name('user.update');
+
+    Route::get('place', 'PlaceController@index')
+         ->name('place');
+
+    Route::get('place/1/show', 'PlaceController@index')
+        ->name('place.show');
 });

@@ -3,7 +3,10 @@
 namespace Parking\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Parking\User;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -70,6 +73,47 @@ class AdminController extends Controller
             $user->activate = TRUE;
 
         $user->save();
+
+        return redirect()->route('user.search');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showUser(User $user)
+    {
+        return view('showUser', compact('user'));
+    }
+
+    public function updateUser(Request $request, User $user)
+    {
+        $request->validate([
+            'lastName' => ['required', 'string', 'max:255'],
+            'firstName' => ['required', 'string', 'max:255'],
+            'phoneNumber' => ['required', 'numeric', 'digits:10'],
+            'address' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'zipCode' => ['required', 'string', 'digits:5'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'password' => ['nullable', 'string', 'min:6', 'max:255', 'confirmed'],
+        ]);
+
+        $user->lastName = request('lastName');
+        $user->firstName = request('firstName');
+        $user->email = request('email');
+        if (!empty(request('password')))
+          $user->password = Hash::make(request('new_password'));
+        $user->address = request('address');
+        $user->zipCode = request('zipCode');
+        $user->city = request('city');
+        $user->phoneNumber =request('phoneNumber');
+        $user->type = request('type');
+        $user->save();
+
+
+        flash("User ($user->lastName $user->firstName) updated successfully.")->success()->important();
 
         return redirect()->route('user.search');
     }

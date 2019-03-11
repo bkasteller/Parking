@@ -40,7 +40,7 @@ class CreatePlacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('places');
         Schema::dropIfExists('place_user');
+        Schema::dropIfExists('places');
     }
 }

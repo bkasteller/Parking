@@ -20,11 +20,6 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $user = User::where('id', Auth::user()->id)
@@ -36,23 +31,11 @@ class UserController extends Controller
         return view('user', compact('user'));
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function showUpdatePassword()
     {
         return view('updatePassword');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function updatePassword(Request $request)
     {
         $request->validate([

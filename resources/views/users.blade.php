@@ -101,9 +101,11 @@
                             Email : {{ $user->email }}
                             <br>
 
-                            <button type="button" class="btn btn-outline-success" href="{{ url('users.update') }}" onclick="event.preventDefault(); document.getElementById('update-user').submit();">
-                                Update
-                            </button>
+                            <a href="{{ route('user.show', $user) }}">
+                                <button type="button" class="btn btn-outline-success">
+                                    Update
+                                </button>
+                            </a>
 
                             <a href="{{ route('user.activate', $user) }}">
                                 <button type="button" class="btn btn-outline-danger">

@@ -59,7 +59,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('/user') }}">
+                                    <a class="dropdown-item" href="{{ route('user') }}">
                                         {{ __('Home') }}
                                     </a>
 
@@ -68,7 +68,7 @@
                                             {{ __('Edit Users') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ url('/places') }}">
+                                        <a class="dropdown-item" href="{{ route('place.show') }}">
                                             {{ __('Edit Places') }}
                                         </a>
                                     @endif
