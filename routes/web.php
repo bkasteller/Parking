@@ -12,43 +12,127 @@
 */
 
 Route::get('/', 'WelcomeController@index')
-     ->name('home');
+    ->name('welcome');
 
 Auth::routes();
 
 Route::group([
    'middleware' => ['is_activate']
 ], function () {
-    Route::get('/user', 'UserController@index')
-         ->name('user');
 
-    Route::get('/password/update', 'UserController@showUpdatePassword')
-         ->name('updatePassword');
-    Route::post('/password/update', 'UserController@updatePassword');
+    /*
+     * Affiche l'historique des places attribué à l'utilisateur connecté et
+     * lui permet de faire ou d'annuler une reservation si il ne possède actuellement aucune places.
+     */
+    Route::get('/user/home', 'UserController@index')
+        ->name('home');
+
+    /*
+     * Affiche la vue contenant le formulaire pour le mot de passe.
+     */
+    Route::get('/user/{user}/password/edit', 'PasswordController@edit')
+        ->name('password.edit');
+
+    /*
+     * Vérifie si la requete est valide et met à jours le mot de passe de l'utilisateur connecté.
+     */
+    Route::post('/user/{user}/password/update', 'PasswordController@update')
+        ->name('password.update');
+
+    /*
+     * Vérifie si il existe une place de libre,
+     * Si non, appel joinRank().
+     * Si oui, passe la place en available = false et créé la réservation.
+     */
+    Route::get('/user/{user}/booking/create', 'BookingController@create')
+        ->name('booking.create');
+
+    /*
+     * Vérifie si une réservation existe.
+     * Si l'utilisateur à un rank, appel leaveRank().
+     * Sinon modifie la durée de la reservation et appel la fonction placeAvailable().
+     */
+    Route::get('/user/{user}/booking/destroy', 'BookingController@destroy')
+        ->name('booking.delete');
 });
 
 Route::group([
    'middleware' => ['is_admin', 'is_activate']
 ], function () {
-    Route::get('/admin', 'AdminController@index')
-         ->name('admin');
 
-    Route::get('/user/search', 'AdminController@searchUser')
+    /*
+     * Affiche tout les utilisateurs.
+     */
+    Route::get('/user/show/all', 'UserController@show')
         ->name('user.search');
-    Route::post('/user/search', 'AdminController@searchUser');
 
-    Route::get('/user/{user}/activate', 'AdminController@activate')
-         ->name('user.activate');
+    /*
+     * Affiche un groupe d'utilisateurs spécifié par une requete.
+     */
+    Route::post('/user/show', 'UserController@show')
+        ->name('user.search');
 
-    Route::get('/user/{user}/show', 'AdminController@showUser')
-       ->name('user.show');
+    /*
+     * Affiche sous forme de formulaire, les informations d'un utilisateur.
+     */
+    Route::get('/user/{user}/edit', 'UserController@edit')
+        ->name('user.edit');
 
-    Route::post('/user/{user}/update', 'AdminController@updateUser')
+    /*
+     * Met à jours les informations d'un utilisateur récuperé d'un formulaire.
+     */
+    Route::post('/user/{user}/update', 'UserController@update')
         ->name('user.update');
 
-    Route::get('place', 'PlaceController@index')
-         ->name('place');
+    /*
+     * Active ou desactive un utilisateur.
+     */
+    Route::post('/user/{user}/activate', 'UserController@activate')
+        ->name('user.activate');
 
-    Route::get('place/1/show', 'PlaceController@index')
-        ->name('place.show');
+    /*
+     * Affiche toute les places de parking.
+     */
+    Route::get('/place/show/all', 'PlaceController@index')
+        ->name('place');
+
+    /*
+     * Créé une nouvelle place.
+     */
+    Route::get('/place/create', 'PlaceController@create')
+        ->name('place.create');
+
+    /*
+     * Affiche les informations d'une place.
+     */
+    Route::get('/place/{place}/edit', 'PlaceController@edit')
+        ->name('place.edit');
+
+    /*
+     * Supprime l'utilisateur de la place et modifie sa duréé de reservation.
+     */
+    Route::get('/place/{place}/update', 'PlaceController@update')
+        ->name('place.update');
+
+    /*
+     * Nous pourrons ajouter le fait d'inverser les utilisateurs de deux places.
+     */
+
+    /*
+     * Rend disponible ou indisponible une place.
+     */
+    Route::get('/place/{place}/available', 'PlaceController@available')
+        ->name('place.available');
+
+    /*
+     * Met à jours l'odre des positions de la liste d'attente.
+     */
+    Route::get('/waitingList/update', 'WaitingListController@update')
+        ->name('waitingList.update');
+
+    /*
+     * Supprime un utilisateur de la file d'attente en appellant leaveRank().
+     */
+    Route::get('/waitingList/destroy', 'WaitingListController@destroy')
+        ->name('waitingList.delete');
 });

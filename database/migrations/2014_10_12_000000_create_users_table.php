@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('city');
             $table->string('activate')->default(FALSE);
             $table->string('type')->default('member');
-            $table->boolean('remember')->default(FALSE);
+            $table->integer('rank')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

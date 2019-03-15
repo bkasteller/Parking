@@ -20,6 +20,6 @@ class IsAdmin
 
         flash('Your not authorized to see this page.')->error()->important();
 
-        return redirect('user');
+        return redirect('home');
     }
 }

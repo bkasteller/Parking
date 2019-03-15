@@ -27,7 +27,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('home') }}">
+                <a class="navbar-brand" href="{{ route('welcome') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -59,21 +59,25 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('user') }}">
+                                    <a class="dropdown-item" href="{{ route('user.index') }}">
                                         {{ __('Home') }}
                                     </a>
 
                                     @if ( Auth::user()->isAdmin() )
-                                        <a class="dropdown-item" href="{{ route('user.search') }}">
+                                        <a class="dropdown-item" href="{{ route('admin.search') }}">
                                             {{ __('Edit Users') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('place.show') }}">
+                                        <a class="dropdown-item" href="{{ route('place.index') }}">
                                             {{ __('Edit Places') }}
+                                        </a>
+
+                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                            {{ __('Waiting List') }}
                                         </a>
                                     @endif
 
-                                    <a class="dropdown-item" href="{{ route('updatePassword') }}">
+                                    <a class="dropdown-item" href="{{ route('user.edit', Auth::user()) }}">
                                         {{ __('Change my Password') }}
                                     </a>
 

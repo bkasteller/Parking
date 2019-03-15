@@ -17,20 +17,6 @@ class CreatePlacesTable extends Migration
             $table->increments('id');
             $table->boolean('available')->default(TRUE);
         });
-
-        Schema::create('place_user', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('place_id')->unsigned();
-            $table->foreign('place_id')->references('id')->on('places');
-            $table->integer('duration')->default(6);
-            $table->timestamp('date');
-            $table->primary([
-                'user_id',
-                'place_id',
-                'date',
-            ]);
-        });
     }
 
     /**
@@ -40,7 +26,6 @@ class CreatePlacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('place_user');
         Schema::dropIfExists('places');
     }
 }

@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder {
                 'updated_at' => '2019-02-14 00:00:00',
                 'activate' => TRUE,
                 'type' => 'admin',
-                'remember' => FALSE
+                'rank' => NULL
             )
         );
     }

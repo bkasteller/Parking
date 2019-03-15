@@ -18,30 +18,27 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'lastName', 'firstName', 'email', 'password', 'phoneNumber', 'address', 'zipCode', 'city', 'activate', 'type', 'remember'
-    ];
+    protected $fillable = ['lastName', 'firstName', 'email', 'password', 'phoneNumber', 'address', 'zipCode', 'city', 'activate', 'type', 'rank'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->type === self::ADMIN_TYPE;
     }
 
     public function places()
     {
-        return $this->belongsToMany('Parking\Place')->withPivot('date', 'duration');
+        return $this->belongsToMany('Parking\Place');
     }
 
-    public function bookings()
+    public function booking()
     {
-        return $this->hasMany('Parking\Booking');
+        return $this->hasMany('\Parking\Booking');
     }
 }

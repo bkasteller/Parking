@@ -20,6 +20,6 @@ class IsActivate
 
         flash('Your account has been deactivated. Please logout.')->error();
 
-        return redirect()->route('home');
+        return redirect()->route('welcome');
     }
 }
