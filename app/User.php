@@ -32,13 +32,40 @@ class User extends Authenticatable
         return $this->type === self::ADMIN_TYPE;
     }
 
-    public function places()
-    {
-        return $this->belongsToMany('Parking\Place');
-    }
-
-    public function booking()
+    public function bookings()
     {
         return $this->hasMany('\Parking\Booking');
+    }
+
+    /*
+     * Retourne l'id du premier utilisateur de la file d'attente ou null si la file d'attente est vide.
+     */
+    function lastRank()
+    {
+
+    }
+
+    /*
+     * Retourne l'id du dernier utilisateur de la file d'attente ou null si la file d'attente est vide.
+     */
+    function firstRank()
+    {
+
+    }
+
+    /*
+     * Decremente de 1 le rank des utilisateurs supérieur au rank de l'utilisateur actuel, puis passe le rank de l'utilisateur à null.
+     */
+    function leaveRank()
+    {
+
+    }
+
+    /*
+     * Ajoute un utilisateur en dernière position de la liste d'attente
+     */
+    function joinRank()
+    {
+
     }
 }

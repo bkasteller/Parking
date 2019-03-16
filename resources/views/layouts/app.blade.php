@@ -59,25 +59,25 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('user.index') }}">
+                                    <a class="dropdown-item" href="{{ route('home') }}">
                                         {{ __('Home') }}
                                     </a>
 
                                     @if ( Auth::user()->isAdmin() )
-                                        <a class="dropdown-item" href="{{ route('admin.search') }}">
+                                        <a class="dropdown-item" href="{{ route('user.show') }}">
                                             {{ __('Edit Users') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('place.index') }}">
+                                        <a class="dropdown-item" href="{{ route('place.show') }}">
                                             {{ __('Edit Places') }}
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <a class="dropdown-item" href="{{ route('waitingList.edit') }}">
                                             {{ __('Waiting List') }}
                                         </a>
                                     @endif
 
-                                    <a class="dropdown-item" href="{{ route('user.edit', Auth::user()) }}">
+                                    <a class="dropdown-item" href="{{ route('password.edit') }}">
                                         {{ __('Change my Password') }}
                                     </a>
 

@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-@if ( notEmpty($user->places) )
-    @foreach ($user->places as $place)
-        <!--{{ $place->pivot->date }}-->
-        {{ isExpired($place) }}
-        {{ lastDay($place) }}
-        {{ remainingDays($place) }}
+
+@if ( !empty($user->bookings[0]) )
+    @foreach ($user->bookings as $booking)
+        {{ $booking->place->available }}
         <br>
     @endforeach
 @else

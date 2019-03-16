@@ -30,16 +30,15 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        return view('user', compact('user'));
+        return view('home', compact('user'));
     }
 
     /**
      * Display a group or single users.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show()
     {
         $users = User::query()
                ->when(request()->has('lastName'), function($query) {
@@ -59,7 +58,7 @@ class UserController extends Controller
                })
                ->get();
 
-               $get_back = $request->all();
+        $get_back = request()->all();
 
         return view('searchUser', compact('users', 'get_back'));
     }
@@ -70,11 +69,9 @@ class UserController extends Controller
      * @param  int id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::find($id);
-
-        return view('showUser', compact('user'));
+        return view('editUser', compact('user'));
     }
 
     /**
@@ -84,9 +81,8 @@ class UserController extends Controller
      * @param  User user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        dd('test');
         $request->validate([
             'lastName' => ['required', 'string', 'max:255'],
             'firstName' => ['required', 'string', 'max:255'],
@@ -108,14 +104,14 @@ class UserController extends Controller
     /**
      * Activate or deactivate a user.
      *
-     * @param  User $user
+     * @param  User user
      * @return \Illuminate\Http\Response
      */
     public function activate(User $user)
     {
-        $user->activate ? $user->activate = FALSE : $user->activate = TRUE;
+        $user->activate = !$user->activate;
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->back();
     }
 }

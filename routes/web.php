@@ -30,13 +30,13 @@ Route::group([
     /*
      * Affiche la vue contenant le formulaire pour le mot de passe.
      */
-    Route::get('/user/{user}/password/edit', 'PasswordController@edit')
+    Route::get('/user/password/edit', 'PasswordController@edit')
         ->name('password.edit');
 
     /*
      * Vérifie si la requete est valide et met à jours le mot de passe de l'utilisateur connecté.
      */
-    Route::post('/user/{user}/password/update', 'PasswordController@update')
+    Route::post('/user/password/update', 'PasswordController@update')
         ->name('password.update');
 
     /*
@@ -64,7 +64,7 @@ Route::group([
      * Affiche tout les utilisateurs.
      */
     Route::get('/user/show/all', 'UserController@show')
-        ->name('user.search');
+        ->name('user.show');
 
     /*
      * Affiche un groupe d'utilisateurs spécifié par une requete.
@@ -87,14 +87,14 @@ Route::group([
     /*
      * Active ou desactive un utilisateur.
      */
-    Route::post('/user/{user}/activate', 'UserController@activate')
+    Route::get('/user/{user}/activate', 'UserController@activate')
         ->name('user.activate');
 
     /*
      * Affiche toute les places de parking.
      */
-    Route::get('/place/show/all', 'PlaceController@index')
-        ->name('place');
+    Route::get('/place/show/all', 'PlaceController@show')
+        ->name('place.show');
 
     /*
      * Créé une nouvelle place.
@@ -115,14 +115,20 @@ Route::group([
         ->name('place.update');
 
     /*
-     * Nous pourrons ajouter le fait d'inverser les utilisateurs de deux places.
-     */
-
-    /*
      * Rend disponible ou indisponible une place.
      */
     Route::get('/place/{place}/available', 'PlaceController@available')
         ->name('place.available');
+
+    /*
+     * Nous pourrons ajouter le fait d'inverser les utilisateurs de deux places.
+     */
+
+    /*
+     * Affiche la liste d'attente.
+     */
+    Route::get('/waitingList/edit', 'WaitingListController@edit')
+        ->name('waitingList.edit');
 
     /*
      * Met à jours l'odre des positions de la liste d'attente.

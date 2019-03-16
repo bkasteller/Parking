@@ -6,49 +6,36 @@
         <div class="col-md-8">
             <div class="card">
                 <table>
-                    <?php $i = 0; ?>
                     @foreach ($places as $place)
-                        @if ( $i == 0 || $i%5 == 0 )
-                            <tr>
-                        @endif
+                        <p>
+                            Place N° {{ $place->id }}
+                            <br>
+                            Assigned to :
+                            <br>
+                            Last user :
+                            <br>
 
-                        @if ( $place->available )
-                                <td style="text-align:center; border: 1px solid green;">
-                        @else
-                                <td style="text-align:center; border: 1px solid red;">
-                        @endif
-                                    <a href="/places/{{ $place->id }}">
-                                        Place N° {{ $place->id }}
-                                    </a>
-                                    <br>
+                            <a href="{{ route('place.edit', $place) }}">
+                                <button type="button" class="btn btn-outline-success">
+                                    Edit
+                                </button>
+                            </a>
+
+                            <a href="{{ route('place.available', $place) }}">
+                                <button type="button" class="btn btn-outline-danger">
                                     @if ( $place->available )
-                                        Assigned : No
-                                        <br>
-                                        Status : Open
-                                        <br>
-                                        <a href="">
-                                            Close
-                                        </a>
+                                        Close
                                     @else
-                                        /
-                                        <br>
-                                        Status : Close
-                                        <br>
-                                        <a href="">
-                                            Open
-                                        </a>
+                                        Open
                                     @endif
-                                </td>
-
-                        @if ( $i%5 == 5 )
-                            </tr>
-                        @endif
-                        <?php $i++; ?>
+                                </button>
+                            </a>
+                        </p>
                     @endforeach
+                    <a href="{{ route('place.create') }}">
+                        + Add one place
+                    </a>
                 </table>
-                <a href="/places/add">
-                    + Add one place
-                </a>
             </div>
         </div>
     </div>

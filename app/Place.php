@@ -15,13 +15,11 @@ class Place extends Model
 
     public $timestamps = false;
 
-    public function users()
+    /*
+     * Récupère toute les réservation de la place.
+     */
+    public function bookings()
     {
-        return $this->belongsToMany('User');
-    }
-
-    public function reservations()
-    {
-        return $this->hasMany('\App\Booking');
+        return $this->hasMany('\Parking\Booking');
     }
 }

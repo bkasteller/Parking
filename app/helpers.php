@@ -1,33 +1,15 @@
 <?php
 
+use Parking\Booking;
+use Parking\User;
+use Parking\Place;
+
+/*
+ * Change the date format
+ */
 function toDate($date)
 {
     return date("Y-m-d", strtotime($date));
-}
-
-
-/*
- * Vérifie si la date est inferieur à la date actuel.
- */
-function isExpired( )
-{
-    return toDate(lastDay( )) < date("Y-m-d");
-}
-
-/*
- * Calcul une date fin en fonction d'une date de debut et un nombre de jours ajouté.
- */
-function lastDay( )
-{
-    return toDate(toDate( )." +". ." days");
-}
-
-/*
- * Calcul le nombre de jours restant entre la date actuel et une date de fin.
- */
-function remainingDays( )
-{
-    return (strtotime(lastDay( )) - strtotime(date("Y-m-d"))) / 86400;
 }
 
 /*
@@ -36,6 +18,35 @@ function remainingDays( )
 function dateToFrench($date)
 {
     return date("d-m-Y", strtotime($date));
+}
+
+/*
+ * Récupère la dernière réservation de la place.
+ */
+function place_booking($place)
+{
+    return Booking::where('place_id', $place->id)
+                  ->orderBy('created_at', 'desc')
+                  ->first();
+}
+
+/*
+ * Récupère le dernier utilisateur de la place, si il existe.
+ */
+function place_user($place)
+{
+    if ( place_booking($place) )
+        return User::where('id', place_booking($place)->id)
+                      ->first();
+    return 0;
+}
+
+/*
+ * Retourne si la place est actuellement occupé par un user ou non.
+ */
+function occupied($place)
+{
+    return !empty(place_booking($place)) && !place_booking($place)->isExpired();
 }
 
 /*
@@ -53,45 +64,4 @@ function placeAvailable(Place $place)
 function givePlace(Place $place)
 {
 
-}
-
-/*
- * Retourne un tableau contenant l'id et le rank de tout les utilisateurs en attente ou
- * un tableau vide si il n'y a aucun utilisateur dans la file d'attente.
- */
-function isWaiting()
-{
-
-}
-
-/*
- * Retourne l'id du premier utilisateur de la file d'attente ou null si la file d'attente est vide.
- */
-function lastRank()
-{
-
-}
-
-/*
- * Retourne l'id du dernier utilisateur de la file d'attente ou null si la file d'attente est vide.
- */
-function firstRank()
-{
-
-}
-
-/*
- * Decremente de 1 le rank des utilisateurs supérieur au rank de l'utilisateur actuel, puis passe le rank de l'utilisateur à null.
- */
-function leaveRank()
-{
-
-}
-
-/*
- * Ajoute un utilisateur en dernière position de la liste d'attente
- */
-function joinRank()
-{
-  
 }

@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Search an USER') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.search') }}">
+                    <form method="POST" action="{{ route('user.search') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -75,7 +75,7 @@
     <div class="row justify-content-center" style="margin-top: 30px;">
         <div class="col-md-8">
             <div class="card">
-                @if ( notEmpty($users) )
+                @if ( !empty($users) )
                     @foreach ( $users as $user )
                         <div style="padding: 25px;">
                             Last Name : {{ $user->lastName }}
@@ -85,13 +85,13 @@
                             Email : {{ $user->email }}
                             <br>
 
-                            <a href="{{ route('admin.edit', $user) }}">
+                            <a href="{{ route('user.edit', $user) }}">
                                 <button type="button" class="btn btn-outline-success">
                                     Update
                                 </button>
                             </a>
 
-                            <a href="{{ route('admin.activate', $user) }}">
+                            <a href="{{ route('user.activate', $user->id) }}">
                                 <button type="button" class="btn btn-outline-danger">
                                     {{ $user->activate ? 'Deactivate' : 'Activate' }}
                                 </button>

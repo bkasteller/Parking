@@ -8,8 +8,8 @@
                 <div class="card-header">{{ __('Show User') }}</div>
 
                 <div class="card-body">
-                    {{dd($user)}}
-                    <form method="POST" action="{{ route('admin.update', $user) }}">
+
+                    <form method="POST" action="{{ route('user.update', $user) }}">
                         @csrf
 
                         <div class="form-group row">
@@ -115,12 +115,11 @@
 
                             <div class="col-md-6">
                                 <select id="type" name=type>
-                                    @if ( $user->type == 'member' )
-                                        <option value="member" selected>Member</option>
-                                        <option value="admin">Admin</option>
-                                    @else
-                                        <option value="member">Member</option>
+                                    <option value="member" selected>Member</option>
+                                    @if ( $user->type == 'admin' )
                                         <option value="admin" selected>Admin</option>
+                                    @else
+                                        <option value="admin">Admin</option>
                                     @endif
                                 </select>
                             </div>

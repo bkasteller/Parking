@@ -18,13 +18,13 @@ class PlaceController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a group or single users.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function show()
     {
-        $places = Places::get();
+        $places = Place::get();
 
         return view('searchPlace', compact('places'));
     }
@@ -38,7 +38,7 @@ class PlaceController extends Controller
     {
         Place::create();
 
-        return redirect()->route('place.show');
+        return redirect()->back();
     }
 
     /**
@@ -49,11 +49,18 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        return view('place', compact('place'));
+        if ( occupied($place) )
+        {
+            $booking = place_booking($place);
+            $user = place_user($place);
+        }else
+            $booking = $user = '';
+
+        return view('editPlace', compact('place', 'booking', 'user'));
     }
 
     /**
-     * Make available or unavailable a place.
+     *
      *
      * @param  Place place
      * @return \Illuminate\Http\Response
@@ -74,7 +81,7 @@ class PlaceController extends Controller
      */
     public function available(Place $place)
     {
-        $place->available ? $place->available = FALSE : $place->available = TRUE;
+        $place->available = !$place->available;
         $place->save();
 
         return redirect()->back();
