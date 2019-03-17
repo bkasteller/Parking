@@ -44,21 +44,25 @@ Route::group([
      * Si non, appel joinRank().
      * Si oui, passe la place en available = false et créé la réservation.
      */
-    Route::get('/user/{user}/booking/create', 'BookingController@create')
+    Route::post('/user/booking/create', 'BookingController@create')
         ->name('booking.create');
 
     /*
-     * Vérifie si une réservation existe.
      * Si l'utilisateur à un rank, appel leaveRank().
-     * Sinon modifie la durée de la reservation et appel la fonction placeAvailable().
      */
-    Route::get('/user/{user}/booking/destroy', 'BookingController@destroy')
-        ->name('booking.delete');
+    Route::post('/user/booking/cancel', 'BookingController@cancel')
+        ->name('booking.cancel');
 });
 
 Route::group([
    'middleware' => ['is_admin', 'is_activate']
 ], function () {
+
+    /*
+     * Modifie la durée de la reservation et appel la fonction placeAvailable().
+     */
+    Route::get('booking/{booking}/delete', 'BookingController@destroy')
+        ->name('booking.delete');
 
     /*
      * Affiche tout les utilisateurs.

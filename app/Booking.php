@@ -3,12 +3,11 @@
 namespace Parking;
 
 use Illuminate\Database\Eloquent\Model;
+use Parking\User;
 
 class Booking extends Model
 {
-    protected $fillable = ['duration'];
-
-    public $timestamps = false;
+    protected $fillable = ['duration', 'user_id', 'place_id'];
 
     public function user()
     {
@@ -41,6 +40,19 @@ class Booking extends Model
      */
     public function isExpired()
     {
-        return toDate($this->lastDay()) < date("Y-m-d");
+        return $this->remainingDays() <= 0;
+    }
+
+    /*
+     * Arrêt d'une reservation en cours.
+     */
+    public function abort()
+    {
+        $place = Place::find($this->place_id)
+                      ->first();
+        $this->duration = (strtotime(date("Y-m-d")) - strtotime(toDate($this->created_at))) / 86400;
+
+        $place->placeAvailable();
+        $this->save();
     }
 }

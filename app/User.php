@@ -5,6 +5,7 @@ namespace Parking;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Parking\Booking;
 
 class User extends Authenticatable
 {
@@ -38,19 +39,34 @@ class User extends Authenticatable
     }
 
     /*
-     * Retourne l'id du premier utilisateur de la file d'attente ou null si la file d'attente est vide.
+     * Récupère la dernière réservation de la place.
      */
-    function lastRank()
+    function booking()
+    {
+        return Booking::where('user_id', $this->id)
+                      ->orderBy('created_at', 'desc')
+                      ->first();
+    }
+
+    /*
+     * Récupère la place attribué à l'utilisateur.
+     */
+    function place()
     {
 
     }
 
     /*
-     * Retourne l'id du dernier utilisateur de la file d'attente ou null si la file d'attente est vide.
+     * Retourne le rank du dernier utilisateur de la file d'attente ou 0 si la file d'attente est vide.
      */
-    function firstRank()
+    function lastRank()
     {
+        $last_rank = User::max('rank');
 
+        if ( empty($last_rank) )
+            $last_rank = 0;
+
+        return $last_rank;
     }
 
     /*
@@ -58,7 +74,12 @@ class User extends Authenticatable
      */
     function leaveRank()
     {
+        User::where('rank', '!=', NULL)
+            ->where('rank', '>', $this->rank)
+            ->decrement('rank', 1);
 
+        $this->rank = NULL;
+        $this->save();
     }
 
     /*
@@ -66,6 +87,15 @@ class User extends Authenticatable
      */
     function joinRank()
     {
-
+        $this->rank = $this->lastRank() + 1;
+        $this->save();
     }
+
+    /*
+     *  Return or not, the place assigned to the user
+     */
+     function havePlace()
+     {
+        return !empty($this->booking()) && $this->booking()->duration > 0;
+     }
 }

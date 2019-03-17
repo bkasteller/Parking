@@ -5,37 +5,46 @@
     <div class="row justify-content-center" style="margin-top: 30px;">
         <div class="col-md-8">
             <div class="card">
-                <table>
-                    @foreach ($places as $place)
-                        <p>
-                            Place N° {{ $place->id }}
-                            <br>
-                            Assigned to :
-                            <br>
-                            Last user :
-                            <br>
+                @foreach ($places as $place)
+                    <p>
+                        <B>Place N°{{ $place->id }}</B>
+                        <br>
+                        @if ( $place->occupied() )
+                            Assigned to : {{ $place->user()->lastName.' '.$place->user()->firstName }}
+                        @else
+                            No user is assigned to this place.
+                        @endif
+                        <br>
+                        Place status :
+                        @if ( $place->available )
+                            <font color="green">Open</font>
+                        @else
+                            <font color="red">Close</font>
+                        @endif
+                        <br>
 
-                            <a href="{{ route('place.edit', $place) }}">
-                                <button type="button" class="btn btn-outline-success">
-                                    Edit
-                                </button>
-                            </a>
+                        <a href="{{ route('place.edit', $place) }}">
+                            <button type="button" class="btn btn-outline-success">
+                                Edit
+                            </button>
+                        </a>
 
-                            <a href="{{ route('place.available', $place) }}">
-                                <button type="button" class="btn btn-outline-danger">
-                                    @if ( $place->available )
-                                        Close
-                                    @else
-                                        Open
-                                    @endif
-                                </button>
-                            </a>
-                        </p>
-                    @endforeach
-                    <a href="{{ route('place.create') }}">
+                        <a href="{{ route('place.available', $place) }}">
+                            <button type="button" class="btn">
+                                @if ( $place->available )
+                                    Close
+                                @else
+                                    Open
+                                @endif
+                            </button>
+                        </a>
+                    </p>
+                @endforeach
+                <a href="{{ route('place.create') }}" style="width:0">
+                    <button type="button" class="btn">
                         + Add one place
-                    </a>
-                </table>
+                    </button>
+                </a>
             </div>
         </div>
     </div>

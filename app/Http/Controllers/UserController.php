@@ -111,6 +111,13 @@ class UserController extends Controller
     {
         $user->activate = !$user->activate;
         $user->save();
+        if ( !$user->activate )
+        {
+            if ( $user->havePlace() )
+                $user->booking()->abort();
+            else if ( !empty($user->rank) )
+                $user->leaveRank();
+        }
 
         return redirect()->back();
     }

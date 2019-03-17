@@ -49,14 +49,7 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        if ( occupied($place) )
-        {
-            $booking = place_booking($place);
-            $user = place_user($place);
-        }else
-            $booking = $user = '';
-
-        return view('editPlace', compact('place', 'booking', 'user'));
+        return view('editPlace', compact('place'));
     }
 
     /**
@@ -81,8 +74,16 @@ class PlaceController extends Controller
      */
     public function available(Place $place)
     {
-        $place->available = !$place->available;
-        $place->save();
+        if ( $place->occupied() )
+            flash('Please end the reservation first to open the <B>Place N°'.$place->id.'</B>.')->error()->important();
+        else {
+          if ( $place->available )
+              $place->available = FALSE;
+          else
+              $place->placeAvailable();
+
+          $place->save();
+        }
 
         return redirect()->back();
     }

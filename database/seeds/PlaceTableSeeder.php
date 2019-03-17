@@ -14,18 +14,20 @@ class PlaceTableSeeder extends Seeder
     {
         DB::table('places')->insert(
             array(
-                'id' => 1,
-                'available' => TRUE
-            ),
+                array(
+                    'id' => 1,
+                    'available' => FALSE
+                ),
 
-            array(
-                'id' => 2,
-                'available' => FALSE
-            ),
+                array(
+                    'id' => 2,
+                    'available' => TRUE
+                ),
 
-            array(
-                'id' => 3,
-                'available' => TRUE
+                array(
+                    'id' => 3,
+                    'available' => TRUE
+                )
             )
         );
     }
