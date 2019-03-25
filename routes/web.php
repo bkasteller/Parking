@@ -123,11 +123,13 @@ Route::group([
      */
     Route::get('/waitingList/edit', 'WaitingListController@edit')
         ->name('waitingList.edit');
+
     /*
      * Met à jours l'odre des positions de la liste d'attente.
      */
     Route::post('/waitingList/{user}/update', 'WaitingListController@update')
         ->name('waitingList.update');
+
     /*
      * Supprime un utilisateur de la file d'attente en appellant leaveRank().
      */

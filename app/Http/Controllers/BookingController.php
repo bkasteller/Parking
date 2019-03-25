@@ -18,19 +18,24 @@ class BookingController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $place = Place::where('available', TRUE)
-                      ->first();
 
-        if ( empty($place) )
+        if ( !exist($user->place()) )
         {
-            $user->joinRank();
-            flash('You joined the waiting list, your position is '.$user->rank)->important();
+            $place = Place::where('available', TRUE)
+                          ->first();
+
+            if ( empty($place) )
+            {
+                $user->joinRank();
+                flash('You joined the waiting list, your position is '.$user->rank)->important();
+            }else
+            {
+                Booking::create(['user_id' => $user->id, 'place_id' => $place->id]);
+                $place->save();
+                flash('You get the place number '.$place->id)->success()->important();
+            }
         }else
-        {
-            Booking::create(['user_id' => $user->id, 'place_id' => $place->id]);
-            $place->save();
-            flash('You get the place number '.$place->id)->success()->important();
-        }
+            flash('You already have a place.')->error()->important();
 
         return redirect()->back();
     }
@@ -57,10 +62,14 @@ class BookingController extends Controller
     {
         $user = Auth::user();
 
-        if ( !empty($user->rank) )
+        if ( exist($user->rank) )
         {
             $user->leaveRank();
             flash('Your place request was canceled.')->success()->important();
+        }else if ( exist($user->place()) )
+        {
+            $user->booking()->abort();
+            flash('Your place as been removed.')->success()->important();
         }
 
         return redirect()->back();

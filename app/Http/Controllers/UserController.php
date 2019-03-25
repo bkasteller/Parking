@@ -94,7 +94,7 @@ class UserController extends Controller
             'password' => ['nullable', 'string', 'min:6', 'max:255', 'confirmed'],
         ]);
 
-        $user->update($request->input());
+        $user->update($request->input()->except(['password', 'password_confirmation']));
 
         if ( exist(request('password')) )
             $user->password = request('password');

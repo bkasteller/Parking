@@ -17,7 +17,7 @@
                 @else
                     No user is assigned to this place.
                     <br>
-                    @if ( $place->user() )
+                    @if ( exist($place->user()) )
                         The last user is : {{ $place->user()->last_name.' '.$place->user()->first_name }}
                     @endif
                 @endif
