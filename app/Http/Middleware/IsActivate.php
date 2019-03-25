@@ -15,6 +15,8 @@ class IsActivate
      */
     public function handle($request, Closure $next)
     {
+        placeFinder();
+
         if ( auth()->user()->activate )
             return $next($request);
 

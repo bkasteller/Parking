@@ -53,37 +53,19 @@ class PlaceController extends Controller
     }
 
     /**
-     *
+     * Make available or unavailable a place.
      *
      * @param  Place place
      * @return \Illuminate\Http\Response
      */
     public function update(Place $place)
     {
-        $place->available ? $place->available = FALSE : $place->available = TRUE;
-        $place->save();
-
-        return redirect()->back();
-    }
-
-    /**
-     * Make available or unavailable a place.
-     *
-     * @param  Place place
-     * @return \Illuminate\Http\Response
-     */
-    public function available(Place $place)
-    {
         if ( $place->occupied() )
-            flash('Please end the reservation first to open the <B>Place N°'.$place->id.'</B>.')->error()->important();
-        else {
-          if ( $place->available )
-              $place->available = FALSE;
-          else
-              $place->placeAvailable();
+            flash('You have closed the <B>Place N°'.$place->id.'</B> but they have an user assigned to this place.
+                  <br>If you don\'t stop this booking, the user can carry on to use this place.')->warning()->important();
 
-          $place->save();
-        }
+        $place->available = !$place->available;
+        $place->save();
 
         return redirect()->back();
     }

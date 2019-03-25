@@ -41,11 +41,11 @@ class UserController extends Controller
     public function show()
     {
         $users = User::query()
-               ->when(request()->has('lastName'), function($query) {
-                    return $query->where('lastName', 'like', '%'. request('lastName') .'%');
+               ->when(request()->has('last_name'), function($query) {
+                    return $query->where('last_name', 'like', '%'. request('last_name') .'%');
                })
-               ->when(request()->has('firstName'), function($query) {
-                    return $query->where('firstName', 'like', '%'. request('firstName') .'%');
+               ->when(request()->has('first_name'), function($query) {
+                    return $query->where('first_name', 'like', '%'. request('first_name') .'%');
                })
                ->when(request()->has('email'), function($query) {
                     return $query->where('email', 'like', '%'. request('email') .'%');
@@ -54,7 +54,7 @@ class UserController extends Controller
                     return $query->where('type', request('type'));
                })
                ->when(request()->has('activate'), function($query) {
-                    return $query->where('activate', request('activate') === 't' ? TRUE : FALSE);
+                    return $query->where('activate', request('activate') === 't');
                })
                ->get();
 
@@ -84,19 +84,22 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'lastName' => ['required', 'string', 'max:255'],
-            'firstName' => ['required', 'string', 'max:255'],
-            'phoneNumber' => ['required', 'numeric', 'digits:10'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'numeric', 'digits:10'],
             'address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'zipCode' => ['required', 'string', 'digits:5'],
+            'postal_code' => ['required', 'string', 'digits:5'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:6', 'max:255', 'confirmed'],
         ]);
 
-        $user->update($request->except('password', 'password_confirmation'));
+        $user->update($request->input());
 
-        flash("User ($user->lastName $user->firstName) updated successfully.")->success()->important();
+        if ( exist(request('password')) )
+            $user->password = request('password');
+
+        flash("User ($user->last_name $user->first_name) updated successfully.")->success()->important();
 
         return redirect()->back();
     }
@@ -115,7 +118,7 @@ class UserController extends Controller
         {
             if ( $user->havePlace() )
                 $user->booking()->abort();
-            else if ( !empty($user->rank) )
+            else if ( exist($user->rank) )
                 $user->leaveRank();
         }
 

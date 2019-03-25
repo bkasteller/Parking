@@ -53,12 +53,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'lastName' => ['required', 'string', 'max:255'],
-            'firstName' => ['required', 'string', 'max:255'],
-            'phoneNumber' => ['required', 'numeric', 'digits:10'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'numeric', 'digits:10'],
             'address' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'zipCode' => ['required', 'string', 'digits:5'],
+            'postal_code' => ['required', 'string', 'digits:5'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'max:255', 'confirmed'],
         ]);
@@ -73,12 +73,12 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'firstName' => ucfirst ( $data['firstName'] ),
-            'lastName' => mb_strtoupper( $data['lastName'] ),
-            'phoneNumber' => $data['phoneNumber'],
+            'first_name' => ucfirst ( $data['first_name'] ),
+            'last_name' => mb_strtoupper( $data['last_name'] ),
+            'phone_number' => $data['phone_number'],
             'address' => $data['address'],
             'city' => ucfirst ( $data['city'] ),
-            'zipCode' => $data['zipCode'],
+            'postal_code' => $data['postal_code'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => User::DEFAULT_TYPE,

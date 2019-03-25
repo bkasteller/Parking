@@ -13,12 +13,11 @@ class BookingController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Request id
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $id)
+    public function create()
     {
-        $user = User::find($id)->first();
+        $user = Auth::user();
         $place = Place::where('available', TRUE)
                       ->first();
 
@@ -29,7 +28,6 @@ class BookingController extends Controller
         }else
         {
             Booking::create(['user_id' => $user->id, 'place_id' => $place->id]);
-            $place->available = FALSE;
             $place->save();
             flash('You get the place number '.$place->id)->success()->important();
         }
@@ -53,12 +51,11 @@ class BookingController extends Controller
     /**
      * If the user is waiting to get a place, leave the waiting list.
      *
-     * @param  Request id
      * @return \Illuminate\Http\Response
      */
-    public function cancel(Request $id)
+    public function cancel()
     {
-        $user = User::find($id)->first();
+        $user = Auth::user();
 
         if ( !empty($user->rank) )
         {

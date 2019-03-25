@@ -3,36 +3,42 @@
 namespace Parking;
 
 use Illuminate\Database\Eloquent\Model;
-use Parking\User;
+use Carbon\Carbon;
 
 class Booking extends Model
 {
     protected $fillable = ['duration', 'user_id', 'place_id'];
 
+    /*
+     * Retourne l'utilisateur ayant fait la réservation.
+     */
     public function user()
     {
       return $this->belongsTo('\Parking\User');
     }
 
+    /*
+     * Retourne la place concerné par la reservation.
+     */
     public function place()
     {
         return $this->belongsTo('\Parking\Place');
     }
 
     /*
-     * Calcul une date fin en fonction d'une date de debut et un nombre de jours ajouté.
+     * Retourne la date de fin en ajoutant la durée à la date de création.
      */
     public function lastDay()
     {
-        return toDate(toDate($this->created_at)." +".$this->duration." days");
+        return $this->created_at->addDays($this->duration);
     }
 
     /*
-     * Calcul le nombre de jours restant entre la date actuel et une date de fin.
+     * Retourne le nombre jours restant avant l'expiration de la reservation.
      */
     public function remainingDays()
     {
-        return (strtotime($this->lastDay()) - strtotime(date("Y-m-d"))) / 86400;
+        return $this->lastDay()->diffInDays(Carbon::now());
     }
 
     /*
@@ -48,11 +54,7 @@ class Booking extends Model
      */
     public function abort()
     {
-        $place = Place::find($this->place_id)
-                      ->first();
-        $this->duration = (strtotime(date("Y-m-d")) - strtotime(toDate($this->created_at))) / 86400;
-
-        $place->placeAvailable();
+        $this->duration = $this->created_at->diffInDays(Carbon::now());
         $this->save();
     }
 }

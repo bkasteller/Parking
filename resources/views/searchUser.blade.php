@@ -12,18 +12,18 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="lastName" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
+                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="last-name" type="text" class="form-control" name="lastName" value="{{ empty($get_back) ? '' : $get_back['lastName'] }}" maxlength="255">
+                                <input id="last-name" type="text" class="form-control" name="last_name" value="{{ empty($get_back) ? '' : $get_back['last_name'] }}" maxlength="255">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="firstName" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
+                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="first-name" type="texte" class="form-control" name="firstName" value="{{ empty($get_back) ? '' : $get_back['firstName'] }}" maxlength="255">
+                                <input id="first-name" type="texte" class="form-control" name="first_name" value="{{ empty($get_back) ? '' : $get_back['first_name'] }}" maxlength="255">
                             </div>
                         </div>
 
@@ -75,12 +75,12 @@
     <div class="row justify-content-center" style="margin-top: 30px;">
         <div class="col-md-8">
             <div class="card">
-                @if ( !empty($users) )
+                @if ( !empty($users[0]) )
                     @foreach ( $users as $user )
                         <div style="padding: 25px;">
-                            Last Name : {{ $user->lastName }}
+                            Last Name : {{ $user->last_name }}
                             <br>
-                            First Name : {{ $user->firstName }}
+                            First Name : {{ $user->first_name }}
                             <br>
                             Email : {{ $user->email }}
                             <br>

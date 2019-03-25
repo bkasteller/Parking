@@ -5,7 +5,6 @@ namespace Parking;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Parking\Booking;
 
 class User extends Authenticatable
 {
@@ -19,83 +18,87 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['lastName', 'firstName', 'email', 'password', 'phoneNumber', 'address', 'zipCode', 'city', 'activate', 'type', 'rank'];
+    protected $fillable = ['last_name', 'first_name', 'email', 'phone_number', 'address', 'postal_code', 'city'];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'activate', 'type', 'rank'];
+
+    protected $dates = ['created_at', 'updated_at'];
 
     public function isAdmin()
     {
         return $this->type === self::ADMIN_TYPE;
     }
 
+    /*
+     * Retourne toute les réservations de l'utilisateur.
+     */
     public function bookings()
     {
         return $this->hasMany('\Parking\Booking');
     }
 
     /*
-     * Récupère la dernière réservation de la place.
+     * Récupère la dernière réservation de l'utilisateur.
      */
-    function booking()
+    public function booking()
     {
-        return Booking::where('user_id', $this->id)
-                      ->orderBy('created_at', 'desc')
-                      ->first();
+        return $this->bookings()->orderBy('created_at', 'desc')->first();
     }
 
     /*
-     * Récupère la place attribué à l'utilisateur.
+     * Retourne la place actuellement attribué à l'utilisateur ou NULL sinon.
      */
-    function place()
+    public function place()
     {
-
-    }
-
-    /*
-     * Retourne le rank du dernier utilisateur de la file d'attente ou 0 si la file d'attente est vide.
-     */
-    function lastRank()
-    {
-        $last_rank = User::max('rank');
-
-        if ( empty($last_rank) )
-            $last_rank = 0;
-
-        return $last_rank;
+        return (!empty($this->booking())
+              && !$this->booking()->isExpired()) ? $this->booking()->place : NULL;
     }
 
     /*
      * Decremente de 1 le rank des utilisateurs supérieur au rank de l'utilisateur actuel, puis passe le rank de l'utilisateur à null.
      */
-    function leaveRank()
+    public function leaveRank()
     {
-        User::where('rank', '!=', NULL)
-            ->where('rank', '>', $this->rank)
-            ->decrement('rank', 1);
-
-        $this->rank = NULL;
-        $this->save();
+        if ( !empty($this->rank) )
+        {
+            User::whereNotNull('rank')
+                ->where('rank', '>', $this->rank)
+                ->decrement('rank', 1);
+            $this->rank = NULL;
+            $this->save();
+        }
     }
 
     /*
      * Ajoute un utilisateur en dernière position de la liste d'attente
      */
-    function joinRank()
+    public function joinRank()
     {
-        $this->rank = $this->lastRank() + 1;
-        $this->save();
+        if ( empty($this->rank) )
+        {
+            $this->rank = lastRank() + 1;
+            $this->save();
+        }
     }
 
     /*
-     *  Return or not, the place assigned to the user
+     * Ajoute un utilisateur au rang passé en paramètre
      */
-     function havePlace()
-     {
-        return !empty($this->booking()) && $this->booking()->duration > 0;
-     }
+    public function updateRank($rank)
+    {
+        if ( empty($this->rank) )
+        {
+            $this->leaveRank();
+            User::whereNotNull('rank')
+                ->where('rank', '>=', $rank)
+                ->increment('rank', 1);
+            $this->rank = $rank;
+            $this->save();
+        }
+    }
 }

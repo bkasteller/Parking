@@ -10,12 +10,12 @@ class UsersTableSeeder extends Seeder {
         DB::table('users')->insert(
             array(
                 'id' => 1,
-                'firstName' => 'Bryan',
-                'lastName' => 'KASTELLER',
-                'phoneNumber' => '0669056264',
+                'first_name' => 'Bryan',
+                'last_name' => 'KASTELLER',
+                'phone_number' => '0669056264',
                 'address' => '23 rue du chêne',
                 'city' => 'Maurevert',
-                'zipCode' => '77390',
+                'postal_code' => '77390',
                 'email' => 'bryan@gmail.com',
                 'password' => Hash::make('passwordbryan'),
                 'created_at' => '2019-02-14 00:00:00',

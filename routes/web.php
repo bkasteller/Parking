@@ -44,13 +44,13 @@ Route::group([
      * Si non, appel joinRank().
      * Si oui, passe la place en available = false et créé la réservation.
      */
-    Route::post('/user/booking/create', 'BookingController@create')
+    Route::get('/user/booking/create', 'BookingController@create')
         ->name('booking.create');
 
     /*
      * Si l'utilisateur à un rank, appel leaveRank().
      */
-    Route::post('/user/booking/cancel', 'BookingController@cancel')
+    Route::get('/user/booking/cancel', 'BookingController@cancel')
         ->name('booking.cancel');
 });
 
@@ -113,36 +113,24 @@ Route::group([
         ->name('place.edit');
 
     /*
-     * Supprime l'utilisateur de la place et modifie sa duréé de reservation.
+     * Rend disponible ou indisponible une place.
      */
     Route::get('/place/{place}/update', 'PlaceController@update')
         ->name('place.update');
-
-    /*
-     * Rend disponible ou indisponible une place.
-     */
-    Route::get('/place/{place}/available', 'PlaceController@available')
-        ->name('place.available');
-
-    /*
-     * Nous pourrons ajouter le fait d'inverser les utilisateurs de deux places.
-     */
 
     /*
      * Affiche la liste d'attente.
      */
     Route::get('/waitingList/edit', 'WaitingListController@edit')
         ->name('waitingList.edit');
-
     /*
      * Met à jours l'odre des positions de la liste d'attente.
      */
-    Route::get('/waitingList/update', 'WaitingListController@update')
+    Route::post('/waitingList/{user}/update', 'WaitingListController@update')
         ->name('waitingList.update');
-
     /*
      * Supprime un utilisateur de la file d'attente en appellant leaveRank().
      */
-    Route::get('/waitingList/destroy', 'WaitingListController@destroy')
+    Route::get('/waitingList/{user}/delete', 'WaitingListController@destroy')
         ->name('waitingList.delete');
 });

@@ -1,22 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-    <button type="button" class="btn btn-outline-success" onclick="event.preventDefault(); document.getElementById('request').submit();">
-        Place request
-    </button>
+    {{$user->booking()}}
+    {{$user->booking()->remainingDays()}}
+    {{empty($user->place()) ? 'No id' : $user->place()->id}}
+    <a href="">
+        <button type="button" class="btn btn-outline-success">
+            Place request
+        </button>
+    </a>
 
-    <form id="request" action="{{ route('booking.create') }}" method="POST" style="display:none;" >
-        @csrf
-        <input type="hidden" name="user" value="{{ $user->id }}">
-    </form>
-
-    <button type="button" class="btn btn-outline-danger" onclick="event.preventDefault(); document.getElementById('cancel').submit();">
-        Cancel the request
-    </button>
-
-    <form id="cancel" action="{{ route('booking.cancel') }}" method="POST" style="display:none;" >
-        @csrf
-        <input type="hidden" name="user" value="{{ $user->id }}">
-    </form>
-
+    <a href="">
+        <button type="button" class="btn btn-outline-danger">
+            Cancel the request
+        </button>
+    </a>
 @endsection

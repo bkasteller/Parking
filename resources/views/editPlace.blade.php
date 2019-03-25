@@ -7,7 +7,7 @@
 
             <div class="card">
                 @if ( $place->occupied() )
-                    Actually assigned to {{ $place->user()->lastName.' '.$place->user()->firstName  }} for {{ $place->booking()->remainingDays() }} days remaining.
+                    Actually assigned to {{ $place->user()->last_name.' '.$place->user()->first_name  }} for {{ $place->booking()->remainingDays() }} days remaining.
                     <br>
                     <a href="{{ route('booking.delete', $place->booking()) }}" style="width:0">
                         <button type="button" class="btn btn-outline-danger">
@@ -18,7 +18,7 @@
                     No user is assigned to this place.
                     <br>
                     @if ( $place->user() )
-                        The last user is : {{ $place->user()->lastName.' '.$place->user()->firstName }}
+                        The last user is : {{ $place->user()->last_name.' '.$place->user()->first_name }}
                     @endif
                 @endif
             </div>
@@ -33,7 +33,7 @@
                 @foreach( $place->bookings as $booking )
                     ------------------ From {{ toDate($booking->created_at) }} to {{ $booking->lastDay() }} ------------------
                     <br>
-                    Assigned to {{ $booking->user->lastName.' '.$booking->user->firstName  }} for {{ $booking->duration ? $booking->duration : '∞' }} days (Booking N°{{ $booking->id }})
+                    Assigned to {{ $booking->user->last_name.' '.$booking->user->first_name  }} for {{ $booking->duration ? $booking->duration : '∞' }} days (Booking N°{{ $booking->id }})
                     <br>
                 @endforeach
             </div>

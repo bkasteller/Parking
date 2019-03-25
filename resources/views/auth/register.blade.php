@@ -12,42 +12,42 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="lastName" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
+                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="lastName" type="text" class="form-control{{ $errors->has('lastName') ? ' is-invalid' : '' }}" name="lastName" value="{{ old('lastName') }}" maxlength="255" required autofocus>
+                                <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" maxlength="255" required autofocus>
 
-                                @if ($errors->has('lastName'))
+                                @if ($errors->has('last_name'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('lastName') }}</strong>
+                                        <strong>{{ $errors->first('last_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="firstName" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
+                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="firstName" type="text" class="form-control{{ $errors->has('firstName') ? ' is-invalid' : '' }}" name="firstName" value="{{ old('firstName') }}" maxlength="255" required>
+                                <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" maxlength="255" required>
 
-                                @if ($errors->has('firstName'))
+                                @if ($errors->has('first_name'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('firstName') }}</strong>
+                                        <strong>{{ $errors->first('first_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="phoneNumber" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+                            <label for="phone_number" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phoneNumber" type="tel" class="form-control{{ $errors->has('phoneNumber') ? ' is-invalid' : '' }}" name="phoneNumber" value="{{ old('phoneNumber') }}" minlength="10" maxlength="10" required>
+                                <input id="phone_number" type="tel" class="form-control{{ $errors->has('phone_number') ? ' is-invalid' : '' }}" name="phone_number" value="{{ old('phone_number') }}" minlength="10" maxlength="10" required>
 
-                                @if ($errors->has('phoneNumber'))
+                                @if ($errors->has('phone_number'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('phoneNumber') }}</strong>
+                                        <strong>{{ $errors->first('phone_number') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -82,14 +82,14 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="zipCode" class="col-md-4 col-form-label text-md-right">{{ __('Zipcode') }}</label>
+                            <label for="postal_code" class="col-md-4 col-form-label text-md-right">{{ __('postal_code') }}</label>
 
                             <div class="col-md-6">
-                                <input id="zipCode" type="text" class="form-control{{ $errors->has('zipCode') ? ' is-invalid' : '' }}" name="zipCode" value="{{ old('zipCode') }}" minlength="5" maxlength="5" required>
+                                <input id="postal_code" type="text" class="form-control{{ $errors->has('postal_code') ? ' is-invalid' : '' }}" name="postal_code" value="{{ old('postal_code') }}" minlength="5" maxlength="5" required>
 
-                                @if ($errors->has('zipCode'))
+                                @if ($errors->has('postal_code'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('zipCode') }}</strong>
+                                        <strong>{{ $errors->first('postal_code') }}</strong>
                                     </span>
                                 @endif
                             </div>

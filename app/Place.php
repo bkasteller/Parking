@@ -3,20 +3,17 @@
 namespace Parking;
 
 use Illuminate\Database\Eloquent\Model;
-use Parking\User;
-use Parking\Booking;
-use Carbon\Carbon;
 
 class Place extends Model
 {
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['available'];
-
-    public $timestamps = false;
 
     /*
      * Récupère toute les réservation de la place.
@@ -27,55 +24,26 @@ class Place extends Model
     }
 
     /*
-     * Récupère la dernière réservation de la place.
+     * Retourne la dernière réservation de la place, NULL sinon.
      */
-    function booking()
+    public function booking()
     {
-        return Booking::where('place_id', $this->id)
-                      ->orderBy('created_at', 'desc')
-                      ->first();
+        return $this->bookings()->orderBy('created_at', 'desc')->first();
     }
 
     /*
-     * Récupère le dernier utilisateur de la place, si il existe.
+     * Retourne le dernier utilisateur de la place, si il existe, NULL sinon.
      */
-    function user()
+    public function user()
     {
-        return User::where('id', $this->booking()->user_id)
-                      ->first();
+        return exist($this->booking()) ? $this->booking()->user : NULL;
     }
 
     /*
      * Retourne si la place est actuellement occupé par un user ou non.
      */
-    function occupied()
+    public function occupied()
     {
-        return !empty($this->booking()) && !$this->booking()->isExpired();
-    }
-
-    /*
-     * Passe une place en available = true.
-     * Appel la fonction givePlace().
-     */
-    function placeAvailable()
-    {
-        $this->available = TRUE;
-        $this->save();
-        $this->givePlace();
-    }
-
-    /*
-     * Libère la place actuelle et l'attribue a la réservation dont le rank = 1, puis appel leaveRank().
-     */
-    function givePlace()
-    {
-        $user = User::where('rank', 1)
-                    ->first();
-
-        if ( !empty($user) )
-        {
-            Booking::create(['user_id' => $user->id, 'place_id' => $this->id]);
-            $user->leaveRank();
-        }
+        return exist($this->booking()) && !$this->booking()->isExpired();
     }
 }
