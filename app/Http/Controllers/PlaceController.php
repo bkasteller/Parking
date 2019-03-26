@@ -49,7 +49,9 @@ class PlaceController extends Controller
      */
     public function edit(Place $place)
     {
-        return view('editPlace', compact('place'));
+        $bookings = $place->bookings->sortBy('created_at')->reverse();
+
+        return view('editPlace', compact('place', 'bookings'));
     }
 
     /**
@@ -60,12 +62,7 @@ class PlaceController extends Controller
      */
     public function update(Place $place)
     {
-        if ( $place->occupied() )
-            flash('You have closed the <B>Place N°'.$place->id.'</B> but they have an user assigned to this place.
-                  <br>If you don\'t stop this booking, the user can carry on to use this place.')->warning()->important();
-
-        $place->available = !$place->available;
-        $place->save();
+        $place->available();
 
         return redirect()->back();
     }

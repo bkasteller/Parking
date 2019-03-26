@@ -29,18 +29,33 @@ function lastRank()
 }
 
 /*
- * Recherche si il existe une place de libre et appel la fonction d'attribution de la place.
+ * Retourne une place éligible à la réservation.
  */
-function placeFinder()
+function getPlace()
 {
     $places = Place::where('available', TRUE)->get();
 
     foreach ($places as $place) {
-        $user = User::where('rank', 1)->first();
-
-        if ( exist($user) && !$place->occupied() )
-            newBooking($place, $user);
+        if ( !$place->occupied() )
+            return $place;
     }
+}
+
+/*
+ * Retourne le premier utilisateur de la file d'attente.
+ */
+function getUser()
+{
+    return User::where('rank', 1)->first();
+}
+
+/*
+ * Récupère une place disponible à la reservation et créé la reservation pour le premier utilisateur de la file d'attente
+ */
+function placeFinder()
+{
+    if ( exist(getPlace()) && exist(getUser()) )
+        newBooking(getPlace(), getUser());
 }
 
 /*
@@ -50,5 +65,5 @@ function newBooking(Place $place, User $user)
 {
     Booking::create(['user_id' => $user->id, 'place_id' => $place->id]);
     $user->leaveRank();
-    flash('Success you have find a place !')->success()->important();
+    flash('Success you are assigned to the place N°'.$place->id.' !')->success()->important();
 }

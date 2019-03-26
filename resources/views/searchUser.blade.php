@@ -91,7 +91,7 @@
                                 </button>
                             </a>
 
-                            <a href="{{ route('user.activate', $user->id) }}">
+                            <a href="{{ route('user.activate', $user) }}">
                                 <button type="button" class="btn btn-outline-danger">
                                     {{ $user->activate ? 'Deactivate' : 'Activate' }}
                                 </button>

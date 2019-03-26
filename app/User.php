@@ -55,8 +55,9 @@ class User extends Authenticatable
      */
     public function place()
     {
-        return (!empty($this->booking())
-              && !$this->booking()->isExpired()) ? $this->booking()->place : NULL;
+        return exist($this->booking())
+              && !$this->booking()->isExpired()
+              ? $this->booking()->place : NULL;
     }
 
     /*
@@ -83,6 +84,7 @@ class User extends Authenticatable
         {
             $this->rank = lastRank() + 1;
             $this->save();
+            flash('You joined the waiting list, your position is '.$this->rank)->important();
         }
     }
 
@@ -100,5 +102,48 @@ class User extends Authenticatable
             $this->rank = $rank;
             $this->save();
         }
+    }
+
+    public function name()
+    {
+        return $this->last_name.' '.$this->first_name;
+    }
+
+    /*
+     * Inverse la valeur du boolean activate.
+     * Si l'utilisateur se voit désactiver, ferme sa demande ou sa réservation.
+     */
+    public function activate()
+    {
+        $this->cancel_rank();
+        $this->cancel_place();
+        $this->activate = !$this->activate;
+        $this->save();
+    }
+
+    /*
+     * Annule l'utilisation d'une place.
+     */
+    public function cancel_rank()
+    {
+        if ( exist($this->rank) )
+        {
+            $this->leaveRank();
+            return 1;
+        }
+        return 0;
+    }
+
+    /*
+     * Annule une demande de reservation.
+     */
+    public function cancel_place()
+    {
+        if ( exist($this->place()) )
+        {
+            $this->booking()->abort();
+            return 1;
+        }
+        return 0;
     }
 }

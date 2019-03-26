@@ -10,7 +10,7 @@
                         <B>Place N°{{ $place->id }}</B>
                         <br>
                         @if ( $place->occupied() )
-                            Assigned to : {{ $place->user()->last_name.' '.$place->user()->first_name }}
+                            Assigned to : {{ $place->user()->name() }}
                         @else
                             No user is assigned to this place.
                         @endif
@@ -31,11 +31,7 @@
 
                         <a href="{{ route('place.update', $place) }}">
                             <button type="button" class="btn">
-                                @if ( $place->available )
-                                    Close
-                                @else
-                                    Open
-                                @endif
+                                {{ $place->available ? 'Close' : 'Open' }}
                             </button>
                         </a>
                     </p>

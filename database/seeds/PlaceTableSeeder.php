@@ -16,12 +16,12 @@ class PlaceTableSeeder extends Seeder
             array(
                 array(
                     'id' => 1,
-                    'available' => FALSE
+                    'available' => TRUE
                 ),
 
                 array(
                     'id' => 2,
-                    'available' => TRUE
+                    'available' => FALSE
                 ),
 
                 array(

@@ -18,8 +18,6 @@ class IsAdmin
         if ( auth()->user()->isAdmin() )
             return $next($request);
 
-        flash('Your not authorized to see this page.')->error()->important();
-
         return redirect()->route('home');
     }
 }

@@ -2,11 +2,11 @@
 
 @section('content')
     {{$user->booking()}}
-    {{$user->booking()->remainingDays()}}
-    {{empty($user->place()) ? 'No id' : $user->place()->id}}
+    {{exist($user->booking()) ? $user->booking()->remainingDays() : NULL}}
+    {{exist($user->place()) ? $user->place()->id : NULL}}
     <a href="{{ route('booking.create') }}">
         <button type="button" class="btn btn-outline-success">
-            Place request
+            Request place
         </button>
     </a>
 

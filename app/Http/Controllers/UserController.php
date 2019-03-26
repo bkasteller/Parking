@@ -112,15 +112,7 @@ class UserController extends Controller
      */
     public function activate(User $user)
     {
-        $user->activate = !$user->activate;
-        $user->save();
-        if ( !$user->activate )
-        {
-            if ( $user->havePlace() )
-                $user->booking()->abort();
-            else if ( exist($user->rank) )
-                $user->leaveRank();
-        }
+        $user->activate();
 
         return redirect()->back();
     }
