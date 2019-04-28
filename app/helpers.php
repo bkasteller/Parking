@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Parking\Place;
 use Parking\User;
 use Parking\Booking;
@@ -7,9 +8,9 @@ use Parking\Booking;
 /*
  * Mon format de date.
  */
-function affDate($date)
+function showDate($date)
 {
-    return Carbon::parse($date);
+    return $date->format('Y-d-m');
 }
 
 /*
@@ -65,5 +66,4 @@ function newBooking(Place $place, User $user)
 {
     Booking::create(['user_id' => $user->id, 'place_id' => $place->id]);
     $user->leaveRank();
-    flash('Success you are assigned to the place N°'.$place->id.' !')->success()->important();
 }

@@ -20,12 +20,11 @@ Route::group([
    'middleware' => ['is_activate']
 ], function () {
 
-    /*
-     * Affiche l'historique des places attribué à l'utilisateur connecté et
-     * lui permet de faire ou d'annuler une reservation si il ne possède actuellement aucune places.
-     */
     Route::get('/user/home', 'UserController@index')
         ->name('home');
+
+    Route::post('/user/home/history/{booking}', 'UserController@index')
+        ->name('history');
 
     /*
      * Affiche la vue contenant le formulaire pour le mot de passe.
@@ -127,7 +126,7 @@ Route::group([
     /*
      * Met à jours l'odre des positions de la liste d'attente.
      */
-    Route::post('/waitingList/{user}/update', 'WaitingListController@update')
+    Route::post('/waitingList/update', 'WaitingListController@update')
         ->name('waitingList.update');
 
     /*

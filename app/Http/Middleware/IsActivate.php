@@ -20,7 +20,7 @@ class IsActivate
         if ( auth()->user()->activate )
             return $next($request);
 
-        flash('Your account has been deactivated. Please logout.')->error();
+        flash('Your account has been deactivated.')->error();
 
         return redirect()->route('welcome');
     }
