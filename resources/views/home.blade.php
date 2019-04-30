@@ -8,7 +8,25 @@
                 <div class="card-header">{{ __('Status') }}</div>
 
                 <div class="card-body">
-                    @if ( exist($user->place()) )
+                    @if ( empty($user->place()) )
+                        @if ( $user->isRanked() )
+                            <B>You are actually in the queue, your position is {{ $user->rank }}</B>
+                            <br>
+                            <a href="{{ route('booking.cancel') }}">
+                                <button type="button" class="btn btn-outline-danger">
+                                    Cancel the request
+                                </button>
+                            </a>
+                        @else
+                            <B>You have no place</B>
+                            <br>
+                            <a href="{{ route('booking.create') }}">
+                                <button type="button" class="btn btn-outline-success">
+                                    Request place
+                                </button>
+                            </a>
+                        @endif
+                    @else
                         You get the place <B>N°{{ $user->booking()->getPlaceWording() }}</B>
                         <br>
                         Started at : <B>{{ showDate($user->booking()->created_at) }}</B>
@@ -18,38 +36,18 @@
                         Ended at : <B>{{ showDate($user->booking()->lastDay()) }}</B>
                         <br>
                         Days remaining : <B>{{ $user->booking()->remainingDays() }}</B>
-                    @else
-                        <B>You have no place at the moment</B>
+                        <br>
+                        <a href="{{ route('booking.cancel') }}">
+                            <button type="button" class="btn btn-outline-danger">
+                                Leave this place
+                            </button>
+                        </a>
                     @endif
                 </div>
             </div>
         </div>
 
         <div class="col-md-8 py-4">
-            <div class="card">
-                <div class="card-body">
-                    @if ( empty($user->place()) )
-                        <a href="{{ route('booking.create') }}">
-                            <button type="button" class="btn btn-outline-success">
-                                Request place
-                            </button>
-                        </a>
-                    @else
-                        <a href="{{ route('booking.cancel') }}">
-                            <button type="button" class="btn btn-outline-danger">
-                                @if ( empty($user->place()) )
-                                    Cancel the request
-                                @else
-                                    Leave this place
-                                @endif
-                            </button>
-                        </a>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('History') }}</div>
 

@@ -20,7 +20,7 @@ class Place extends Model
      */
     public function bookings()
     {
-        return $this->hasMany('\Parking\Booking');
+        return $this->hasMany('\Parking\Booking')->orderBy('created_at', 'desc');
     }
 
     /*
@@ -28,7 +28,7 @@ class Place extends Model
      */
     public function booking()
     {
-        return $this->bookings()->orderBy('created_at', 'desc')->first();
+        return $this->bookings()->first();
     }
 
     /*
@@ -55,7 +55,7 @@ class Place extends Model
      */
     public function available()
     {
-        $this->eject_user();
+        $this->ejectUser();
         $this->available = !$this->available;
         $this->save();
     }
@@ -63,7 +63,7 @@ class Place extends Model
     /*
      * Ejecte l'utilisateur de la place.
      */
-    public function eject_user()
+    public function ejectUser()
     {
           if ( exist($this->user()) )
           {

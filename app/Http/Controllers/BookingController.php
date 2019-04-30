@@ -20,8 +20,8 @@ class BookingController extends Controller
     {
         $user = Auth::user();
         $condition = Booking::where('id', $booking->id)
-                          ->where('user_id', $user->id)
-                          ->first();
+                            ->where('user_id', $user->id)
+                            ->first();
 
         if ( $user->isAdmin() || exist($condition) )
             return view('showBooking', compact('booking'));

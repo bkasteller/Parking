@@ -69,7 +69,7 @@ Route::group([
     /*
      * Affiche tout les utilisateurs.
      */
-    Route::get('/user/show/all', 'UserController@show')
+    Route::get('/user/show', 'UserController@show')
         ->name('user.show');
 
     /*
@@ -99,7 +99,7 @@ Route::group([
     /*
      * Affiche toute les places de parking.
      */
-    Route::get('/place/show/all', 'PlaceController@show')
+    Route::get('/place/show', 'PlaceController@show')
         ->name('place.show');
 
     /*

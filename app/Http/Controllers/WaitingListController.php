@@ -27,10 +27,11 @@ class WaitingListController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request);
-        $rank = request('rank');
-        $user->leaveRank();
-        $user->updateRank($rank);
+        $user = User::where('rank', request('last_rank'))->first();
+        $rank = request('new_rank');
+
+        if ( exist($user) )
+            $user->updateRank($rank);
 
         return redirect()->back();
     }

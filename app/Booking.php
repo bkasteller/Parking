@@ -54,7 +54,7 @@ class Booking extends Model
      */
     public function isExpired()
     {
-        return $this->lastDay()->lt(Carbon::now());
+        return Carbon::now()->gt($this->lastDay());
     }
 
     /*

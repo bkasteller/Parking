@@ -10,9 +10,9 @@
                 <div class="card-body">
                     Booking id : <B>{{ $booking->id }}</B>
                     <br>
-                    User : <B>{{ $booking->user->name() }}</B>
+                    User : <B>{{ $booking->user->name() }}</B> ( id : {{ $booking->user->id }} )
                     <br>
-                    Place : <B>N°{{ $booking->place->wording }}</B>
+                    Place : <B>N°{{ $booking->place->wording }}</B> ( id : {{ $booking->place->id }} )
                     <br>
                     Start : <B>{{ showDate($booking->created_at) }}</B>
                     <br>

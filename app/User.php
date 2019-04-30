@@ -61,6 +61,14 @@ class User extends Authenticatable
     }
 
     /*
+     * Retourne si l'utilisateur est dans la file d'attente.
+     */
+    public function isRanked()
+    {
+        return $this->rank != NULL;
+    }
+
+    /*
      * Decremente de 1 le rank des utilisateurs supérieur au rank de l'utilisateur actuel, puis passe le rank de l'utilisateur à null.
      */
     public function leaveRank()
@@ -85,6 +93,8 @@ class User extends Authenticatable
             $this->rank = lastRank() + 1;
             $this->save();
         }
+
+        flash('No place is currently available, you joined the queue.')->important();
     }
 
     /*
@@ -92,7 +102,7 @@ class User extends Authenticatable
      */
     public function updateRank($rank)
     {
-        if ( empty($this->rank) )
+        if ( $this->updateRankCondition($rank) )
         {
             $this->leaveRank();
             User::whereNotNull('rank')
@@ -101,6 +111,14 @@ class User extends Authenticatable
             $this->rank = $rank;
             $this->save();
         }
+    }
+
+    public function updateRankCondition($rank)
+    {
+        return exist($this->rank)
+              && $rank != $this->rank
+              && $rank >= 1
+              && $rank <= lastRank();
     }
 
     public function name()
