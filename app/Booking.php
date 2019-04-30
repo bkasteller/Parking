@@ -26,6 +26,14 @@ class Booking extends Model
     }
 
     /*
+     * Retourne le libellé de la place.
+     */
+    public function getPlaceWording()
+    {
+        return $this->place->wording;
+    }
+
+    /*
      * Retourne la date de fin en ajoutant la durée à la date de création.
      */
     public function lastDay()
@@ -46,7 +54,7 @@ class Booking extends Model
      */
     public function isExpired()
     {
-        return $this->remainingDays() <= 0;
+        return $this->lastDay()->lt(Carbon::now());
     }
 
     /*

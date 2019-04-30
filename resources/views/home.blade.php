@@ -5,17 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('My Place') }}</div>
+                <div class="card-header">{{ __('Status') }}</div>
 
                 <div class="card-body">
                     @if ( exist($user->place()) )
-                        You have the place <B>N°{{ $user->booking()->place_id }}</B>
+                        You get the place <B>N°{{ $user->booking()->getPlaceWording() }}</B>
                         <br>
-                        Start : <B>{{ showDate($user->booking()->created_at) }}</B>
+                        Started at : <B>{{ showDate($user->booking()->created_at) }}</B>
                         <br>
                         Assigned for : <B>{{ $user->booking()->duration }} day(s)</B>
                         <br>
-                        End : <B>{{ showDate($user->booking()->lastDay()) }}</B>
+                        Ended at : <B>{{ showDate($user->booking()->lastDay()) }}</B>
                         <br>
                         Days remaining : <B>{{ $user->booking()->remainingDays() }}</B>
                     @else
@@ -49,16 +49,18 @@
             </div>
         </div>
 
-        <div class="col-md-8 py-4">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('History') }}</div>
 
                 <div class="card-body">
                     @foreach ( $user->bookings as $booking )
-                        <a href="{{ route('history', $booking) }}">
-                            Booking from the <B>{{ showDate($booking->created_at) }}</B> to <B>{{ showDate($booking->lastDay()) }}</B>
-                        </a>
-                        <br>
+                        @if ( $booking->isExpired() )
+                            <a href="{{ route('booking.show', $booking) }}">
+                                <B>Place N°{{ $booking->place->wording }}</B> from the <B>{{ showDate($booking->created_at) }}</B> to <B>{{ showDate($booking->lastDay()) }}</B>
+                            </a>
+                            <br>
+                        @endif
                     @endforeach
                 </div>
             </div>

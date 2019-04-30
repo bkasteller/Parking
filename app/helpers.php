@@ -10,7 +10,7 @@ use Parking\Booking;
  */
 function showDate($date)
 {
-    return $date->format('Y-d-m');
+    return $date->format('d/m/Y');
 }
 
 /*

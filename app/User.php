@@ -39,7 +39,7 @@ class User extends Authenticatable
      */
     public function bookings()
     {
-        return $this->hasMany('\Parking\Booking');
+        return $this->hasMany('\Parking\Booking')->orderBy('created_at', 'desc');
     }
 
     /*
@@ -47,7 +47,7 @@ class User extends Authenticatable
      */
     public function booking()
     {
-        return $this->bookings()->orderBy('created_at', 'desc')->first();
+        return $this->bookings()->first();
     }
 
     /*
@@ -84,7 +84,6 @@ class User extends Authenticatable
         {
             $this->rank = lastRank() + 1;
             $this->save();
-            flash('You joined the waiting list, your position is '.$this->rank)->important();
         }
     }
 

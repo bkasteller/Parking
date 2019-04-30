@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Show User') }}</div>
+                <div class="card-header">{{ __('User') }}</div>
 
                 <div class="card-body">
 
@@ -159,6 +159,23 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 py-4">
+            <div class="card">
+                <div class="card-header">{{ __('History') }}</div>
+
+                <div class="card-body">
+                    @foreach ( $user->bookings as $booking )
+                        @if ( $booking->isExpired() )
+                            <a href="{{ route('booking.show', $booking) }}">
+                                <B>Place N°{{ $booking->place->wording }}</B> from the <B>{{ showDate($booking->created_at) }}</B> to <B>{{ showDate($booking->lastDay()) }}</B>
+                            </a>
+                            <br>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>

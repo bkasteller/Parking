@@ -13,7 +13,7 @@ class Place extends Model
      *
      * @var array
      */
-    protected $fillable = ['available'];
+    protected $fillable = ['wording', 'available'];
 
     /*
      * Récupère toute les réservation de la place.

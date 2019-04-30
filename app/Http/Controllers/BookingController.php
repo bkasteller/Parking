@@ -11,6 +11,25 @@ use Auth;
 class BookingController extends Controller
 {
     /**
+     * Display the specified resource.
+     *
+     * @param  Booking booking
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Booking $booking)
+    {
+        $user = Auth::user();
+        $condition = Booking::where('id', $booking->id)
+                          ->where('user_id', $user->id)
+                          ->first();
+
+        if ( $user->isAdmin() || exist($condition) )
+            return view('showBooking', compact('booking'));
+
+        return redirect()->back();
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

@@ -25,7 +25,7 @@
 
                         <a href="{{ route('place.edit', $place) }}">
                             <button type="button" class="btn btn-outline-success">
-                                Edit
+                                Informations
                             </button>
                         </a>
 

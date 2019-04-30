@@ -14,12 +14,23 @@ class BookingTableSeeder extends Seeder
     {
         DB::table('bookings')->insert(
             array(
-                'id' => 1,
-                'duration' => 99,
-                'created_at' => '2019-03-12',
-                'updated_at' => '2019-03-12',
-                'user_id' => 1,
-                'place_id' => 1
+                array(
+                    'id' => 1,
+                    'duration' => 5,
+                    'created_at' => '2019-03-12',
+                    'updated_at' => '2019-03-12',
+                    'user_id' => 1,
+                    'place_id' => 1
+                ),
+
+                array(
+                    'id' => 2,
+                    'duration' => 99,
+                    'created_at' => '2019-03-18',
+                    'updated_at' => '2019-03-18',
+                    'user_id' => 1,
+                    'place_id' => 1
+                )
             )
         );
     }

@@ -87,7 +87,7 @@
 
                             <a href="{{ route('user.edit', $user) }}">
                                 <button type="button" class="btn btn-outline-success">
-                                    Update
+                                    Informations
                                 </button>
                             </a>
 

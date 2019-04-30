@@ -20,22 +20,19 @@ Route::group([
    'middleware' => ['is_activate']
 ], function () {
 
-    Route::get('/user/home', 'UserController@index')
+    Route::get('/home', 'UserController@index')
         ->name('home');
-
-    Route::post('/user/home/history/{booking}', 'UserController@index')
-        ->name('history');
 
     /*
      * Affiche la vue contenant le formulaire pour le mot de passe.
      */
-    Route::get('/user/password/edit', 'PasswordController@edit')
+    Route::get('/password', 'PasswordController@edit')
         ->name('password.edit');
 
     /*
      * Vérifie si la requete est valide et met à jours le mot de passe de l'utilisateur connecté.
      */
-    Route::post('/user/password/update', 'PasswordController@update')
+    Route::post('/password', 'PasswordController@update')
         ->name('password.update');
 
     /*
@@ -43,14 +40,20 @@ Route::group([
      * Si non, appel joinRank().
      * Si oui, passe la place en available = false et créé la réservation.
      */
-    Route::get('/user/booking/create', 'BookingController@create')
+    Route::get('/booking/create', 'BookingController@create')
         ->name('booking.create');
 
     /*
      * Si l'utilisateur à un rank, appel leaveRank().
      */
-    Route::get('/user/booking/cancel', 'BookingController@cancel')
+    Route::get('/booking/cancel', 'BookingController@cancel')
         ->name('booking.cancel');
+
+    /*
+     * Permet d'acceder à l'historique d'une place de l'utilisateur.
+     */
+    Route::get('/booking/{booking}', 'BookingController@show')
+        ->name('booking.show');
 });
 
 Route::group([
@@ -60,7 +63,7 @@ Route::group([
     /*
      * Modifie la durée de la reservation et appel la fonction placeAvailable().
      */
-    Route::get('booking/{booking}/delete', 'BookingController@destroy')
+    Route::get('/booking/{booking}/delete', 'BookingController@destroy')
         ->name('booking.delete');
 
     /*
