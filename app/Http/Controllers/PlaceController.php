@@ -8,16 +8,6 @@ use Parking\Place;
 class PlaceController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Display a group or single users.
      *
      * @return \Illuminate\Http\Response

@@ -17,7 +17,7 @@ Route::get('/', 'WelcomeController@index')
 Auth::routes();
 
 Route::group([
-   'middleware' => ['is_activate']
+   'middleware' => ['is_activate', 'auth']
 ], function () {
 
     Route::get('/home', 'UserController@index')
@@ -57,7 +57,7 @@ Route::group([
 });
 
 Route::group([
-   'middleware' => ['is_admin', 'is_activate']
+   'middleware' => ['is_admin', 'is_activate', 'auth']
 ], function () {
 
     /*

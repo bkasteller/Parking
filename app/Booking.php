@@ -9,12 +9,14 @@ class Booking extends Model
 {
     protected $fillable = ['duration', 'user_id', 'place_id'];
 
+    protected $dates = ['created_at', 'updated_at'];
+
     /*
      * Retourne l'utilisateur ayant fait la réservation.
      */
     public function user()
     {
-      return $this->belongsTo('\Parking\User');
+        return $this->belongsTo('\Parking\User');
     }
 
     /*
@@ -46,7 +48,7 @@ class Booking extends Model
      */
     public function remainingDays()
     {
-        return $this->lastDay()->diffInDays(Carbon::now());
+    return $this->lastDay()->diffInDays(Carbon::now()/*->addDays(1)*/);
     }
 
     /*
@@ -62,7 +64,7 @@ class Booking extends Model
      */
     public function abort()
     {
-        $this->duration = $this->created_at->diffInDays(Carbon::now());
+    $this->duration = $this->created_at->diffInDays(Carbon::now()/*->addDays(1)*/);
         $this->save();
     }
 }

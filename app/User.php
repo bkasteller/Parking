@@ -93,8 +93,6 @@ class User extends Authenticatable
             $this->rank = lastRank() + 1;
             $this->save();
         }
-
-        flash('No place is currently available, you joined the queue.')->important();
     }
 
     /*

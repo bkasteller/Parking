@@ -26,8 +26,6 @@
                         </a>
                     @else
                         <B>No user assigned to this place</B>
-                        <br>
-                        Last user : {{ exist($place->booking()) ? $place->booking()->user->name() : "this place is clean" }}
                     @endif
                 </div>
             </div>

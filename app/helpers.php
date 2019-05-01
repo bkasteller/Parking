@@ -36,10 +36,10 @@ function getPlace()
 {
     $places = Place::where('available', TRUE)->get();
 
-    foreach ($places as $place) {
+    foreach ($places as $place)
         if ( !$place->occupied() )
             return $place;
-    }
+    return NULL;
 }
 
 /*
@@ -55,8 +55,13 @@ function getUser()
  */
 function placeFinder()
 {
-    if ( exist(getPlace()) && exist(getUser()) )
-        newBooking(getPlace(), getUser());
+    if ( exist(getUser()) )
+    {
+        if ( exist(getPlace()) )
+            newBooking(getPlace(), getUser());
+        else if ( empty(getPlace()) )
+            flash('No place is currently available, you joined the queue.')->important();
+    }
 }
 
 /*
@@ -64,6 +69,8 @@ function placeFinder()
  */
 function newBooking(Place $place, User $user)
 {
+
     Booking::create(['user_id' => $user->id, 'place_id' => $place->id]);
     $user->leaveRank();
+    flash('Success a place was find!')->success()->important();
 }
