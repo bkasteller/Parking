@@ -26,7 +26,9 @@ class PlaceController extends Controller
     */
     public function create()
     {
-        Place::create();
+        $place = Place::create();
+        $place->wording = $place->id;
+        $place->save();
 
         return redirect()->back();
     }
